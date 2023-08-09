@@ -1,0 +1,17 @@
+.circleButton {
+    background: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid black;
+    margin-right: 5px;
+    display: inline-block;
+    padding: 0;
+    text-align: center;
+    line-height: 30px;
+}
+
+.circleButton.clicked {
+    background: black;
+    color: white;
+}
