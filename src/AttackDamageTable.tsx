@@ -6,8 +6,8 @@ interface AttackDamageTableProps {
 
 const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
     return (
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
-            <thead style={{ backgroundColor: 'black', color: 'white' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center', border: 'solid black', marginBottom: 5 }}>
+            <thead style={{ backgroundColor: 'black', color: 'white', borderRadius: 10 }}>
                 <tr>
                     <th style={{ minWidth: 50, maxWidth: 100 }}>S (+0)</th>
                     <th style={{ minWidth: 50, maxWidth: 100 }}>M (+2)</th>
@@ -16,9 +16,9 @@ const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
             </thead>
             <tbody style={{ backgroundColor: 'lightgray' }}>
                 <tr>
-                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold' }}>{unit.BFDamageShort}</td>
-                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold' }}>{unit.BFDamageMedium}</td>
-                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold' }}>{unit.BFDamageLong}</td>
+                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold', fontSize: 20 }}>{unit.BFDamageShort}</td>
+                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold', fontSize: 20 }}>{unit.BFDamageMedium}</td>
+                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold', fontSize: 20 }}>{unit.BFDamageLong}</td>
                 </tr>
             </tbody>
         </table>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DefaultButton, DetailsList, IColumn, Modal, Panel, SelectionMode } from '@fluentui/react';
+import { DefaultButton, DetailsList, IColumn, Modal, Panel, ResponsiveMode, SelectionMode } from '@fluentui/react';
 import NameList from './NameList';
 import MyUnitCard from './MyUnitCard';
 
@@ -42,7 +42,7 @@ const MyUnits: React.FC = () => {
 
 
     const columns: IColumn[] = [
-        { key: 'Id', name: 'Id', fieldName: 'MyId', minWidth: 20, maxWidth: 30 },
+        { key: 'MyDamage', name: 'D', fieldName: 'MyDamage', minWidth: 20, maxWidth: 30 },
         {
 
             key: 'name',
@@ -73,6 +73,7 @@ const MyUnits: React.FC = () => {
 
     return (
         <div>
+
             <DetailsList
                 items={units}
                 columns={columns}

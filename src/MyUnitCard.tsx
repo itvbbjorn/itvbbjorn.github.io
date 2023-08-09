@@ -40,12 +40,14 @@ const calculateTMM = (unit: Unit) => {
 
 const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits }) => {
     return (
-        <div>
+        <div style={{ padding: 5 }}>
+            <span style={{ fontSize: 24, fontWeight: 'bold' }}>{unit.Name}</span>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
                 <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 40 }}>
                     <Stack>
                         <Stack horizontal style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Stack horizontal tokens={{ childrenGap: 10 }}>
+
                                 <Stack tokens={{ childrenGap: 5 }}>
                                     <span>Type: {unit.Type.Name}</span>
                                     <span>Role: {unit.Role.Name} </span>
@@ -53,13 +55,12 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                             </Stack>
                             <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span>
                         </Stack>
-                        <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
+                        <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }} >
                             <span className='game-properties'>SZ: {unit.BFSize}</span>
                             <span className='game-properties'>TMM: {calculateTMM(unit)}</span>
                             <span className='game-properties'>MV: {unit.BFMove}</span>
                         </Stack>
                     </Stack>
-
                     <AttackDamageTable unit={unit} />
                 </Stack>
                 <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image'></img>
@@ -81,7 +82,6 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
 
                 </Stack.Item>
             </Stack>
-            <HeatPanel unit={unit} updateHeat={updateHeat} />
         </div>
     )
 }
