@@ -4,7 +4,12 @@ import axios from 'axios';
 import UnitDetailsPanel from './UnitDetailsPanel';
 import Names from './Names';
 
-const NameList: React.FC = () => {
+interface NameListProps {
+    onAddUnit: (unit: Unit) => void;
+}
+
+
+const NameList: React.FC<NameListProps> = ({ onAddUnit }) => {
     const [filter, setFilter] = useState('');
     const [filteredNames, setFilteredNames] = useState(Names);
     const [selectedUnit, setSelectedUnit] = useState<any>(null);
@@ -73,7 +78,7 @@ const NameList: React.FC = () => {
         <div>
             <TextField label="Filter by name:" onChange={handleFilterChange} value={filter} />
             <DetailsList items={items} columns={columns} />
-            <UnitDetailsPanel unit={selectedUnit} isOpen={isPanelOpen} onClose={() => setIsPanelOpen(false)} />
+            <UnitDetailsPanel unit={selectedUnit} isOpen={isPanelOpen} onClose={() => setIsPanelOpen(false)} onAddUnit={onAddUnit} />
         </div>
     );
 };

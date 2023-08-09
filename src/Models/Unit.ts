@@ -60,7 +60,7 @@ type Unit = {
     FormatedTonnage: string;
     MyId?: number;
     MyDamage?: number;
-    MyHeat?: number;
+    MyHeat?: string[];
     MyEngineHits?: number;
     MyFCHits?: number;
     MyMPHits?: number;
