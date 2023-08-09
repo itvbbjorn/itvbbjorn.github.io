@@ -1,8 +1,9 @@
 import React from 'react';
 import { Panel, Stack } from '@fluentui/react';
 import './Styles-UnitDetailsPanel.css';
-import UnitDamageTable from './UnitDamageTable';
+import AttackDamageTable from './AttackDamageTable';
 import HeatPanel from './HeatPanel';
+import DamagePanel from './DamagePanel';
 
 interface UnitDetailsPanelProps {
     unit: Unit;
@@ -62,11 +63,12 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
                             <span className='game-properties'>MV: {unit.BFMove}</span>
                         </Stack>
                     </Stack>
-                    <UnitDamageTable unit={unit} />
+                    <AttackDamageTable unit={unit} />
                 </Stack>
                 <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image'></img>
             </Stack>
             <HeatPanel unit={unit} />
+            <DamagePanel unit={unit} />
         </Panel>
     );
 

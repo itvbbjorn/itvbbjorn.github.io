@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface UnitDamageTableProps {
+interface AttackDamageTableProps {
     unit: Unit;
 }
 
-const UnitDamageTable: React.FC<UnitDamageTableProps> = ({ unit }) => {
+const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
     return (
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
             <thead style={{ backgroundColor: 'black', color: 'white' }}>
@@ -25,4 +25,4 @@ const UnitDamageTable: React.FC<UnitDamageTableProps> = ({ unit }) => {
     );
 };
 
-export default UnitDamageTable;
+export default AttackDamageTable;
