@@ -62,7 +62,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
                 <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image'></img>
             </Stack>
             <HeatPanel unit={unit} updateHeat={() => { }} />
-            <DamagePanel unit={unit} />
+            <DamagePanel unit={unit} updateDamage={() => { }} />
             <Stack horizontal styles={{ root: { display: 'flex', width: '100%' } }}>
                 <Stack.Item grow={1} styles={{ root: { border: 'solid black', borderRadius: 10, padding: 5, backgroundColor: 'lightgray', marginTop: "5px" } }}>
                     <span style={{ fontWeight: 'bold' }}>

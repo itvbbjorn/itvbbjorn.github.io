@@ -8,6 +8,7 @@ import AttackDamageTable from './AttackDamageTable';
 interface UnitCardProps {
     unit: Unit;
     updateHeat: (unitId: number, heat: string[]) => void;
+    updateDamage: (unitId: number, damage: number) => void;
 }
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
 // TODO: Handle units with multiple movement/TMM i.e Flea
@@ -36,7 +37,7 @@ const calculateTMM = (unit: Unit) => {
     }
 }
 
-const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat }) => {
+const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage }) => {
     return (
         <div>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
@@ -63,7 +64,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat }) => {
                 <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image'></img>
             </Stack>
             <HeatPanel unit={unit} updateHeat={updateHeat} />
-            <DamagePanel unit={unit} />
+            <DamagePanel unit={unit} updateDamage={(damage) => updateDamage(unit.MyId!, damage)} />
             <Stack horizontal styles={{ root: { display: 'flex', width: '100%' } }}>
                 <Stack.Item grow={1} styles={{ root: { border: 'solid black', borderRadius: 10, padding: 5, backgroundColor: 'lightgray', marginTop: "5px" } }}>
                     <span style={{ fontWeight: 'bold' }}>

@@ -3,26 +3,36 @@ import './Styles-DamagePanel.css';
 import { Stack } from '@fluentui/react';
 
 interface DamagePanelProps {
-    unit: {
-        BFArmor: number;
-        BFStructure: number; // You'll need to replace this with the actual property name for the "S" value
-    };
+    unit: Unit;
+    updateDamage: (damage: number) => void;
 }
 
-const DamagePanel: React.FC<DamagePanelProps> = ({ unit }) => {
-    const [clickedArmorButtons, setClickedArmorButtons] = useState(Array(unit.BFArmor).fill(false));
-    const [clickedSButtons, setClickedSButtons] = useState(Array(unit.BFStructure).fill(false));
+
+const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
+    const armorDamage = Math.min(unit.BFArmor, unit.MyDamage ?? 0);
+    const structureDamage = Math.max(0, (unit.MyDamage ?? 0) - unit.BFArmor);
+
+    const [clickedArmorButtons, setClickedArmorButtons] = useState(Array(unit.BFArmor).fill(false).map((_, i) => i < armorDamage));
+    const [clickedSButtons, setClickedSButtons] = useState(Array(unit.BFStructure).fill(false).map((_, i) => i < structureDamage));
 
     const handleArmorButtonClick = (index: number) => {
         const newClickedButtons = [...clickedArmorButtons];
         newClickedButtons[index] = !newClickedButtons[index];
         setClickedArmorButtons(newClickedButtons);
+
+        const totalDamage = newClickedButtons.filter(btn => btn).length + clickedSButtons.filter(btn => btn).length;
+        updateDamage(totalDamage);
     };
 
     const handleSButtonClick = (index: number) => {
+        // if user is trying to fill a circle, check if all armor circles are not filled 
+        if (!clickedSButtons[index] && clickedArmorButtons.some(btn => !btn)) return;
         const newClickedButtons = [...clickedSButtons];
         newClickedButtons[index] = !newClickedButtons[index];
         setClickedSButtons(newClickedButtons);
+
+        const totalDamage = clickedArmorButtons.filter(btn => btn).length + newClickedButtons.filter(btn => btn).length;
+        updateDamage(totalDamage);
     };
 
     return (
