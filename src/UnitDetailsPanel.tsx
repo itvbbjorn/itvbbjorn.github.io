@@ -2,6 +2,7 @@ import React from 'react';
 import { Panel, Stack } from '@fluentui/react';
 import './Styles-UnitDetailsPanel.css';
 import UnitDamageTable from './UnitDamageTable';
+import HeatPanel from './HeatPanel';
 
 interface UnitDetailsPanelProps {
     unit: Unit;
@@ -65,6 +66,7 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
                 </Stack>
                 <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image'></img>
             </Stack>
+            <HeatPanel unit={unit} />
         </Panel>
     );
 
