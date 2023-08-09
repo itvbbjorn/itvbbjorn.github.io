@@ -27,6 +27,10 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit }) => {
         }
     };
 
+    const getTextColor = (key: keyof typeof clicked) => {
+        return clicked[key] ? 'yellow' : key === '2' || key === '3' ? 'white' : 'black';
+    };
+
     return (
         <div style={{ border: 'solid black', borderRadius: 10, padding: 5, backgroundColor: 'lightgray' }}>
             <Stack horizontal verticalAlign='center' horizontalAlign="stretch" tokens={{ childrenGap: 10 }} styles={{ root: { width: '100%' } }}>
@@ -46,7 +50,7 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit }) => {
                                     width: '30px',
                                     height: '30px',
                                     fontWeight: 'bold',
-                                    color: key === '2' || key === '3' || clicked[key] ? 'white' : 'black',
+                                    color: getTextColor(key),
                                     borderRadius: 5,
                                     border: 'none',
                                 }}
