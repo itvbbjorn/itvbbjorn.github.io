@@ -11,7 +11,6 @@ function App() {
 
   return (
     <div className="App">
-      <h1>My App</h1>
       <button onClick={fetchData}>Fetch Data</button>
       {isLoading ? <p>Loading...</p> : <NameList />}
     </div>

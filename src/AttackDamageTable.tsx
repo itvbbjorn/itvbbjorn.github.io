@@ -16,9 +16,9 @@ const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
             </thead>
             <tbody style={{ backgroundColor: 'lightgray' }}>
                 <tr>
-                    <td style={{ minWidth: 50, maxWidth: 100, color: 'red', fontWeight: 'bold' }}>{unit.BFDamageShort}</td>
-                    <td style={{ minWidth: 50, maxWidth: 100, color: 'red', fontWeight: 'bold' }}>{unit.BFDamageMedium}</td>
-                    <td style={{ minWidth: 50, maxWidth: 100, color: 'red', fontWeight: 'bold' }}>{unit.BFDamageLong}</td>
+                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold' }}>{unit.BFDamageShort}</td>
+                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold' }}>{unit.BFDamageMedium}</td>
+                    <td style={{ minWidth: 50, maxWidth: 100, color: 'darkred', fontWeight: 'bold' }}>{unit.BFDamageLong}</td>
                 </tr>
             </tbody>
         </table>

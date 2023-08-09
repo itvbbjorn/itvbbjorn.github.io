@@ -35,7 +35,7 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit }) => {
         <div style={{ border: 'solid black', borderRadius: 10, padding: 5, backgroundColor: 'lightgray' }}>
             <Stack horizontal verticalAlign='center' horizontalAlign="stretch" tokens={{ childrenGap: 10 }} styles={{ root: { width: '100%' } }}>
                 <Stack.Item grow={1}>
-                    <span style={{ fontWeight: 'bold' }}>OV: <span style={{ color: 'red' }}>{unit.BFOverheat}</span></span>
+                    <span style={{ fontWeight: 'bold' }}>OV: <span style={{ color: 'darkred' }}>{unit.BFOverheat}</span></span>
                 </Stack.Item>
                 <Stack.Item grow={1}>
                     <span style={{ fontWeight: 'bold', backgroundColor: 'darkgrey', color: 'white', padding: 5, borderRadius: 10 }}>HEAT SCALE</span>

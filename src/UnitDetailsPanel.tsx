@@ -1,9 +1,10 @@
 import React from 'react';
-import { Panel, Stack } from '@fluentui/react';
+import { Panel, Stack, TextField } from '@fluentui/react';
 import './Styles-UnitDetailsPanel.css';
 import AttackDamageTable from './AttackDamageTable';
 import HeatPanel from './HeatPanel';
 import DamagePanel from './DamagePanel';
+import CriticalHitsPanel from './CriticalHitsPanel';
 
 interface UnitDetailsPanelProps {
     unit: Unit;
@@ -69,6 +70,21 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
             </Stack>
             <HeatPanel unit={unit} />
             <DamagePanel unit={unit} />
+            <Stack horizontal styles={{ root: { display: 'flex', width: '100%' } }}>
+                <Stack.Item grow={1} styles={{ root: { border: 'solid black', borderRadius: 10, padding: 5, backgroundColor: 'lightgray', marginTop: "5px" } }}>
+                    <span style={{ fontWeight: 'bold' }}>
+                        SPECIAL:
+                    </span>
+                    <div style={{ fontWeight: 'bold', color: "darkred", marginLeft: "5px" }}>
+                        {unit.BFAbilities}
+                    </div>
+                    <CriticalHitsPanel unit={unit} />
+                </Stack.Item>
+                <Stack.Item grow={1}>
+
+                </Stack.Item>
+            </Stack>
+
         </Panel>
     );
 
