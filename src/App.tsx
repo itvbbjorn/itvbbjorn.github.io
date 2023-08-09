@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NameList from './NameList';
-import useNameScraper from './useNameScraper';
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 
 initializeIcons();
 
 function App() {
-  const { unitStrings, fetchData, isLoading } = useNameScraper();
-  const [filter] = useState('');
 
   return (
     <div className="App">
-      <button onClick={fetchData}>Fetch Data</button>
-      {isLoading ? <p>Loading...</p> : <NameList />}
+      <NameList />
     </div>
   );
 }

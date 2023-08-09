@@ -1,5 +1,5 @@
 import { Stack } from '@fluentui/react';
-import React, { useState } from 'react';
+import React from 'react';
 import CriticalHitsCircles from './CriticalHitsCircles';
 
 interface CriticalHitsPanelProps {
