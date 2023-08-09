@@ -1,11 +1,32 @@
 import { Stack } from '@fluentui/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface HeatPanelProps {
     unit: Unit;
 }
 
 const HeatPanel: React.FC<HeatPanelProps> = ({ unit }) => {
+    const [clicked, setClicked] = useState({ '1': false, '2': false, '3': false, 'S': false });
+
+    const handleButtonClick = (key: keyof typeof clicked) => {
+        setClicked(prev => ({ ...prev, [key]: !prev[key] }));
+    };
+
+    const getButtonColor = (key: keyof typeof clicked) => {
+        switch (key) {
+            case '1':
+                return clicked[key] ? 'white' : 'yellow';
+            case '2':
+                return clicked[key] ? 'white' : 'orange';
+            case '3':
+                return clicked[key] ? 'white' : 'red';
+            case 'S':
+                return clicked[key] ? 'white' : 'darkred';
+            default:
+                return 'white';
+        }
+    };
+
     return (
         <div style={{ border: 'solid black', borderRadius: 10, padding: 5, backgroundColor: 'lightgray' }}>
             <Stack horizontal verticalAlign='center' horizontalAlign="stretch" tokens={{ childrenGap: 10 }} styles={{ root: { width: '100%' } }}>
@@ -17,15 +38,28 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit }) => {
                 </Stack.Item>
                 <Stack.Item grow={1}>
                     <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <button style={{ background: 'yellow', width: '30px', height: '30px', fontWeight: 'bold', borderRadius: 5, border: 'none' }}>1</button>
-                        <button style={{ background: 'orange', width: '30px', height: '30px', fontWeight: 'bold', color: 'white', borderRadius: 5, border: 'none' }}>2</button>
-                        <button style={{ background: 'red', width: '30px', height: '30px', fontWeight: 'bold', color: 'white', borderRadius: 5, border: 'none' }}>3</button>
-                        <button style={{ background: 'darkred', width: '30px', height: '30px', fontWeight: 'bold', color: 'white', borderRadius: 5, border: 'none' }}>S</button>
+                        {(['1', '2', '3', 'S'] as (keyof typeof clicked)[]).map(key => (
+                            <button
+                                key={key}
+                                style={{
+                                    background: getButtonColor(key),
+                                    width: '30px',
+                                    height: '30px',
+                                    fontWeight: 'bold',
+                                    color: key === '2' || key === '3' || clicked[key] ? 'white' : 'black',
+                                    borderRadius: 5,
+                                    border: 'none',
+                                }}
+                                onClick={() => handleButtonClick(key)}
+                            >
+                                {key}
+                            </button>
+                        ))}
                     </span>
                 </Stack.Item>
             </Stack>
         </div>
     );
-}
+};
 
 export default HeatPanel;
