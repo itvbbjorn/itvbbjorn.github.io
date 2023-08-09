@@ -1,12 +1,34 @@
-.damage-button {
-    width: 20px;
-    height: 20px;
+.circleButton {
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     border: 2px solid black;
     background-color: white;
     display: inline-block;
-    margin-right: 3px;
+    margin-left: 3px;
     padding: 0;
     text-align: center;
     line-height: 20px;
+}
+
+.circleButton.clicked {
+    background-color: black;
+}
+
+
+.sCircleButton {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid black;
+    background-color: red;
+    display: inline-block;
+    margin-left: 3px;
+    padding: 0;
+    text-align: center;
+    line-height: 20px;
+}
+
+.sCircleButton.clicked {
+    background-color: black;
 }
