@@ -30,6 +30,16 @@ const MyUnits: React.FC = () => {
             prevUnits.map(unit => (unit.MyId === unitId ? { ...unit, MyDamage: damage } : unit))
         );
     };
+    const updateHits = (unitId: number, type: string, hits: number) => {
+        setUnits(prevUnits =>
+            prevUnits.map(unit =>
+                unit.MyId === unitId
+                    ? { ...unit, [type]: hits }
+                    : unit
+            )
+        );
+    };
+
 
     const columns: IColumn[] = [
         { key: 'Id', name: 'Id', fieldName: 'MyId', minWidth: 20, maxWidth: 30 },
@@ -85,7 +95,7 @@ const MyUnits: React.FC = () => {
                 onDismiss={closeModal}
                 isBlocking={false}
             >
-                {selectedUnit && <MyUnitCard unit={selectedUnit} updateHeat={updateHeat} updateDamage={updateDamage} />}
+                {selectedUnit && <MyUnitCard unit={selectedUnit} updateHeat={updateHeat} updateDamage={updateDamage} updateHits={updateHits} />}
             </Modal>
         </div>
     );

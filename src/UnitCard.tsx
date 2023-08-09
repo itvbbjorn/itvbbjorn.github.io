@@ -71,7 +71,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
                     <div style={{ fontWeight: 'bold', color: "darkred", marginLeft: "5px" }}>
                         {unit.BFAbilities}
                     </div>
-                    <CriticalHitsPanel unit={unit} />
+                    <CriticalHitsPanel unit={unit} updateHits={() => { }} />
                 </Stack.Item>
                 <Stack.Item grow={1}>
 

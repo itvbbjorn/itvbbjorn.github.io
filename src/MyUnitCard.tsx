@@ -9,6 +9,7 @@ interface UnitCardProps {
     unit: Unit;
     updateHeat: (unitId: number, heat: string[]) => void;
     updateDamage: (unitId: number, damage: number) => void;
+    updateHits: (unitId: number, type: string, hits: number) => void;
 }
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
 // TODO: Handle units with multiple movement/TMM i.e Flea
@@ -37,7 +38,7 @@ const calculateTMM = (unit: Unit) => {
     }
 }
 
-const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage }) => {
+const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits }) => {
     return (
         <div>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
@@ -73,7 +74,8 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage })
                     <div style={{ fontWeight: 'bold', color: "darkred", marginLeft: "5px" }}>
                         {unit.BFAbilities}
                     </div>
-                    <CriticalHitsPanel unit={unit} />
+                    <CriticalHitsPanel unit={unit} updateHits={updateHits} />
+
                 </Stack.Item>
                 <Stack.Item grow={1}>
 
