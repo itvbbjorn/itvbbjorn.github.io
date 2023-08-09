@@ -1,0 +1,18 @@
+.unit-image {
+    width: 25%;
+    float: right;
+    margin: 10px;
+    object-fit: contain;
+}
+
+.game-properties-stack {
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-properties {
+    flex-grow: 1;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
