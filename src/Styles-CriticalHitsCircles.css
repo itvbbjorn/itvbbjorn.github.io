@@ -1,17 +1,17 @@
-.circleButton {
+.critical-hit-circle {
     background: white;
-    width: 30px;
-    height: 30px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     border: 1px solid black;
-    margin-right: 5px;
+    margin-right: 3px;
     display: inline-block;
     padding: 0;
     text-align: center;
     line-height: 30px;
 }
 
-.circleButton.clicked {
+.critical-hit-circle.clicked {
     background: black;
     color: white;
 }

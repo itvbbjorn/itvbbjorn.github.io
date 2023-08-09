@@ -16,7 +16,7 @@ const CriticalHitsCircles: React.FC<{ count: number }> = ({ count }) => {
             {clickedCircles.map((clicked, i) => (
                 <button
                     key={i}
-                    className={`circleButton ${clicked ? 'clicked' : ''}`}
+                    className={`critical-hit-circle ${clicked ? 'clicked' : ''}`}
                     onClick={() => handleCircleClick(i)}
                 />
             ))}

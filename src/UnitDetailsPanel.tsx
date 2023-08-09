@@ -1,10 +1,11 @@
 import React from 'react';
-import { Panel, Stack, TextField } from '@fluentui/react';
+import { FontWeights, Panel, Stack, TextField } from '@fluentui/react';
 import './Styles-UnitDetailsPanel.css';
 import AttackDamageTable from './AttackDamageTable';
 import HeatPanel from './HeatPanel';
 import DamagePanel from './DamagePanel';
 import CriticalHitsPanel from './CriticalHitsPanel';
+import { blob } from 'stream/consumers';
 
 interface UnitDetailsPanelProps {
     unit: Unit;
@@ -54,9 +55,14 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
                 <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 40 }}>
                     <Stack>
-                        <Stack horizontal tokens={{ childrenGap: 10 }}>
-                            <span>Type: {unit.Type.Name}</span>
-                            <span>Role: {unit.Role.Name} </span>
+                        <Stack horizontal style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Stack horizontal tokens={{ childrenGap: 10 }}>
+                                <Stack tokens={{ childrenGap: 5 }}>
+                                    <span>Type: {unit.Type.Name}</span>
+                                    <span>Role: {unit.Role.Name} </span>
+                                </Stack>
+                            </Stack>
+                            <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span>
                         </Stack>
                         <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
                             <span className='game-properties'>SZ: {unit.BFSize}</span>
@@ -64,6 +70,7 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
                             <span className='game-properties'>MV: {unit.BFMove}</span>
                         </Stack>
                     </Stack>
+
                     <AttackDamageTable unit={unit} />
                 </Stack>
                 <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image'></img>

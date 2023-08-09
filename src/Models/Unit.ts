@@ -58,4 +58,11 @@ type Unit = {
     BFAbilities: string;
     Skill: number;
     FormatedTonnage: string;
+    MyId?: number;
+    MyDamage?: number;
+    MyHeat?: number;
+    MyEngineHits?: number;
+    MyFCHits?: number;
+    MyMPHits?: number;
+    MyWeaponHits?: number;
 };
