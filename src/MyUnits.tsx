@@ -20,6 +20,11 @@ const MyUnits: React.FC = () => {
         setIsNameListPanelOpen(false); // Closing the NameList panel after adding the unit
     };
 
+    const updateHeat = (unitId: number, heat: string[]) => {
+        setUnits(prevUnits =>
+            prevUnits.map(unit => (unit.MyId === unitId ? { ...unit, MyHeat: heat } : unit))
+        );
+    };
 
     const columns: IColumn[] = [
         { key: 'Id', name: 'Id', fieldName: 'MyId', minWidth: 20, maxWidth: 30 },
@@ -75,7 +80,7 @@ const MyUnits: React.FC = () => {
                 onDismiss={closeModal}
                 isBlocking={false}
             >
-                {selectedUnit && <MyUnitCard unit={selectedUnit} />}
+                {selectedUnit && <MyUnitCard unit={selectedUnit} updateHeat={updateHeat} />}
             </Modal>
         </div>
     );
