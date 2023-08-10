@@ -41,7 +41,7 @@ const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
         updateDamage(totalDamage);
     };
 
-    const handleSButtonClick = (index: number) => {
+    const handleStructureButtonClick = (index: number) => {
         // if user is trying to fill a circle, check if all armor circles are not filled 
         if (!clickedSButtons[index] && clickedArmorButtons.some(btn => !btn)) return;
         const newClickedButtons = [...clickedSButtons];
@@ -65,7 +65,7 @@ const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
         >
             <Stack>
                 <Stack horizontal>
-                    <span style={{ fontWeight: 'bold' }}>A:</span>
+                    <span className="label" style={{ fontWeight: 'bold' }}>A:</span>
                     {clickedArmorButtons.map((clicked, i) => (
                         <button
                             key={i}
@@ -75,15 +75,17 @@ const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
                     ))}
                 </Stack>
                 <Stack horizontal>
-                    <span style={{ fontWeight: 'bold' }}>S:</span>
+                    <span className="label" style={{ fontWeight: 'bold' }}>S:</span>
                     {clickedSButtons.map((clicked, i) => (
                         <button
                             key={i}
                             className={`sCircleButton ${clicked ? 'clicked' : ''}`}
-                            onClick={() => handleSButtonClick(i)}
+                            onClick={() => handleStructureButtonClick(i)}
                         />
                     ))}
                 </Stack>
+
+
             </Stack>
         </div>
     );
