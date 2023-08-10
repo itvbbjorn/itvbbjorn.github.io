@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DetailsList, IColumn, TextField, CommandBarButton, SelectionMode } from '@fluentui/react';
+import { DetailsList, IColumn, TextField, CommandBarButton, SelectionMode, Spinner, Stack } from '@fluentui/react';
 import axios from 'axios';
 import UnitDetailsPanel from './UnitDetailsPanel';
 import Names from './Names';
@@ -15,15 +15,19 @@ const NameList: React.FC<NameListProps> = ({ onAddUnit }) => {
     const [filteredNames, setFilteredNames] = useState(Names);
     const [selectedUnit, setSelectedUnit] = useState<any>(null);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = (name: string) => {
-
+        setIsLoading(true);
         const url = `https://masterunitlist.azurewebsites.net/Unit/QuickList?Name=${name}`;
         axios
             .get(url)
             .then(response => handleResponse(response, name))
             .catch(error => {
                 console.error('An error occurred:', error);
+            })
+            .finally(() => {
+                setIsLoading(false); 
             });
     };
 
@@ -69,8 +73,12 @@ const NameList: React.FC<NameListProps> = ({ onAddUnit }) => {
 
     return (
         <div>
-            <TextField label="Filter by name:" onChange={handleFilterChange} value={filter} placeholder='Start typing...' />
-            {filter && (
+            <TextField label="Filter by name:" onChange={handleFilterChange} value={filter} placeholder='Start typing...' disabled={isLoading} /> {/* Disable input during loading */}
+            {isLoading ? ( // Step 3: Conditionally Render
+                <Stack horizontalAlign="center" verticalAlign="center" styles={{ root: { height: 50 } }}> {/* Centering the spinner */}
+                    <Spinner label="Loading..." ariaLive="assertive" labelPosition="right" />
+                </Stack>
+            ) : filter && (
                 <DetailsList items={items} columns={columns} selectionMode={SelectionMode.none} />
             )}
             <UnitDetailsPanel unit={selectedUnit} isOpen={isPanelOpen} onClose={() => setIsPanelOpen(false)} onAddUnit={onAddUnit} />
