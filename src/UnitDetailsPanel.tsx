@@ -28,13 +28,13 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
         <Panel
             isOpen={isOpen}
             onDismiss={onClose}
-            headerText={unit.Name}
+            headerText='Unit preview'
             closeButtonAriaLabel="Close"
         >
             <UnitCard unit={unit}></UnitCard>
             {onAddUnit && (
                 <DefaultButton
-                    text="Add Unit"
+                    text="Add unit to force"
                     onClick={handleAddUnit}
                     style={{
                         display: 'block',

@@ -51,16 +51,29 @@ const calculateTMM = (unit: Unit) => {
 };
 const calculateAdjustedMV = (unit: Unit): string => {
     const originalParts = unit.BFMove.split('/');
+    const heatAdjustment = unit.MyHeat?.length || 0; 
+
     return originalParts.map(part => {
+        const hasJump = part.endsWith('j');
         const numberMatch = part.match(/\d+/g);
         let numberValue = numberMatch ? parseInt(numberMatch[0]) : 0;
+
+        // half MV for critical hits
         for(let i = 0; i < (unit.MyMPHits || 0); i++) {
             numberValue = Math.round(numberValue / 2);
         }
 
-        return part.replace(/\d+/g, numberValue.toString());
+        // Apply heat adjustments, but not if it's a jump (ends with 'j')
+        if (!hasJump) {
+            numberValue -= heatAdjustment * 2;
+        }
+
+        numberValue = Math.max(0, numberValue);
+
+        return hasJump ? `${numberValue}j` : `${numberValue}`; 
     }).join('/');
 };
+
 
 
 

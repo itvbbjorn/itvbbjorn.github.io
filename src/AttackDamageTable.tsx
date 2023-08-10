@@ -8,11 +8,12 @@ interface AttackDamageTableProps {
 const calculateAdjustedDamage = (baseDamage: number, weaponHits: number) => {
     return Math.max(0, baseDamage - weaponHits);
 };
-const calculateAdjustedRangeLabel = (baseRangeLabel: string, fcHits: number) => {
-    let adjustment = 0;
-    if(baseRangeLabel === "S") adjustment = 0 + (2 * fcHits);
-    if(baseRangeLabel === "M") adjustment = 2 + (2 * fcHits);
-    if(baseRangeLabel === "L") adjustment = 4 + (2 * fcHits);
+const calculateAdjustedRangeLabel = (baseRangeLabel: string, fcHits: number, heat: number) => {
+    let adjustment = heat;
+    console.log(heat);
+    if(baseRangeLabel === "S") adjustment += 0 + (2 * fcHits);
+    if(baseRangeLabel === "M") adjustment += 2 + (2 * fcHits);
+    if(baseRangeLabel === "L") adjustment += 4 + (2 * fcHits);
 
     return `${baseRangeLabel} (+${adjustment})`;
 };
@@ -24,14 +25,15 @@ const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
     const adjustedShort = calculateAdjustedDamage(unit.BFDamageShort, weaponHits);
     const adjustedMedium = calculateAdjustedDamage(unit.BFDamageMedium, weaponHits);
     const adjustedLong = calculateAdjustedDamage(unit.BFDamageLong, weaponHits);
+    const heat = unit.MyHeat?.length ?? 0;
 
     return (
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center', border: 'solid black', marginBottom: 5 }}>
             <thead style={{ backgroundColor: 'black', color: 'white', borderRadius: 10 }}>
                 <tr>
-                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("S", fcHits)}</th>
-                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("M", fcHits)}</th>
-                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("L", fcHits)}</th>
+                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("S", fcHits, heat)}</th>
+                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("M", fcHits, heat)}</th>
+                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("L", fcHits, heat)}</th>
                 </tr>
             </thead>
             <tbody style={{ backgroundColor: 'lightgray' }}>
