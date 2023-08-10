@@ -1,5 +1,5 @@
 import { Stack } from '@fluentui/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Styles-HeatPanel.css'
 
 interface HeatPanelProps {
@@ -9,6 +9,17 @@ interface HeatPanelProps {
 
 const HeatPanel: React.FC<HeatPanelProps> = ({ unit, updateHeat }) => {
     // const [clicked, setClicked] = useState({ '1': false, '2': false, '3': false, 'S': false });
+    useEffect(() => {
+        const newClicked: Record<ClickedKeys, boolean> = { '1': false, '2': false, '3': false, 'S': false };
+        unit.MyHeat?.forEach((heatValue) => {
+            // Narrow the type of heatValue
+            const key = heatValue as ClickedKeys;
+            if (newClicked.hasOwnProperty(key)) {
+                newClicked[key] = true;
+            }
+        });
+        setClicked(newClicked);
+    }, [unit.MyHeat]);
 
     // Define the keys as a type
     type ClickedKeys = '1' | '2' | '3' | 'S';

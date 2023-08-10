@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { DefaultButton, DetailsList, IColumn, Modal, Panel, ResponsiveMode, SelectionMode } from '@fluentui/react';
+import { DefaultButton, Panel, Icon } from '@fluentui/react';
 import NameList from './NameList';
 import MyUnitCard from './MyUnitCard';
 import './Styles-MyUnits.css'
 
 const MyUnits: React.FC = () => {
     const [units, setUnits] = useState<Unit[]>([]);
-    const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
     const [isNameListPanelOpen, setIsNameListPanelOpen] = useState(false);
     const [lastId, setLastId] = useState(0); // Keep track of the last used MyId
 
@@ -45,41 +44,13 @@ const MyUnits: React.FC = () => {
         );
     };
 
-
-    const columns: IColumn[] = [
-        { key: 'MyDamage', name: 'D', fieldName: 'MyDamage', minWidth: 20, maxWidth: 30 },
-        {
-
-            key: 'name',
-            name: 'Name',
-            fieldName: 'Name',
-            minWidth: 100,
-            maxWidth: 200,
-            onRender: (item: Unit) => (
-                <span onClick={() => onUnitClick(item)}>{item.Name}</span>
-            ),
-        },
-        { key: 'groupName', name: 'Group Name', fieldName: 'GroupName', minWidth: 100, maxWidth: 200 },
-
-        // Add other columns as needed to display the fields you want
-    ];
-
     const openPanel = () => setIsNameListPanelOpen(true);
-    const dismissPanel = () => setIsNameListPanelOpen(false);
 
-    const onUnitClick = (unit?: Unit) => {
-        console.log(unit);
-        setSelectedUnit(unit || null);
-    };
-
-    const closeModal = () => {
-        setSelectedUnit(null);
-    };
     return (
         <div>
             <div className="cardsGrid"> {/* Grid container */}
                 {units.map((unit) => (
-                    <div className="cardContainer" key={unit.MyId} onClick={() => onUnitClick(unit)}>
+                    <div className='cardContainer'>
                         <MyUnitCard
                             unit={unit}
                             updateHeat={updateHeat}
@@ -91,65 +62,26 @@ const MyUnits: React.FC = () => {
                 ))}
             </div>
 
-            <DefaultButton text="Add Unit" onClick={openPanel} />
+            <DefaultButton
+                onClick={openPanel}
+                style={{
+                    width: 340,
+                    position: 'relative',
+                    bottom: 20,
+                    marginTop: 80,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                }}
+            >
+                <Icon iconName="Add" />
+            </DefaultButton>
+
 
             <Panel isOpen={isNameListPanelOpen} onDismiss={() => setIsNameListPanelOpen(false)} headerText="Add Unit">
                 <NameList onAddUnit={addUnit} />
             </Panel>
         </div>
     );
-
-    // return (
-    //     <div style={{}}>
-
-    //         {units.map((unit) => (
-    //             // <div style={{ border: 'solid black', borderRadius: 10, margin: 5, marginBottom: 10, marginTop: 10 }}>
-    //             <MyUnitCard
-    //                 key={unit.MyId}
-    //                 unit={unit}
-    //                 updateHeat={updateHeat}
-    //                 updateDamage={updateDamage}
-    //                 updateHits={updateHits}
-    //             />
-    //             // </div>
-    //         ))}
-
-    //         <DefaultButton text="Add Unit" onClick={openPanel} />
-
-    //         <Panel isOpen={isNameListPanelOpen} onDismiss={() => setIsNameListPanelOpen(false)} headerText="Add Unit">
-    //             <NameList onAddUnit={addUnit} />
-    //         </Panel>
-
-    //     </div>
-    // );
-    // return (
-    //     <div>
-    //         <DetailsList
-    //             items={units}
-    //             columns={columns}
-    //             selectionMode={SelectionMode.none}
-    //             onItemInvoked={onUnitClick} // Handle item click
-    //         />
-    //         <DefaultButton
-    //             text="Add Unit"
-    //             onClick={openPanel}
-    //         />
-    //         <Panel
-    //             isOpen={isNameListPanelOpen}
-    //             onDismiss={() => setIsNameListPanelOpen(false)}
-    //             headerText="Add Unit"
-    //         >
-    //             <NameList onAddUnit={addUnit} />
-    //         </Panel>
-    //         <Modal
-    //             isOpen={selectedUnit !== null}
-    //             onDismiss={closeModal}
-    //             isBlocking={false}
-    //         >
-    //             {selectedUnit && <MyUnitCard unit={selectedUnit} updateHeat={updateHeat} updateDamage={updateDamage} updateHits={updateHits} />}
-    //         </Modal>
-    //     </div>
-    // );
 };
 
 export default MyUnits;

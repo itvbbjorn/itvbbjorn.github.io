@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Styles-DamagePanel.css';
 import { Stack } from '@fluentui/react';
 
@@ -14,20 +14,23 @@ const calculateBackgroundColor = (damage: number, armor: number, structure: numb
     if (damage >= armor) return 'red'; // Equal to or more than the armor value
 
     if (percentageDamage === 0) return 'lightgrey'; // No damage
-    if (percentageDamage < 0.25) return 'white'; // Low damage
+    if (percentageDamage < 0.25) return 'lightgrey'; // Low damage
     if (percentageDamage < 0.5) return 'yellow'; // Medium damage
     if (percentageDamage < 0.75) return 'orange'; // High damage
     return 'darkgray'; // Critical damage
 };
 
-
 const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
-
     const armorDamage = Math.min(unit.BFArmor, unit.MyDamage ?? 0);
     const structureDamage = Math.max(0, (unit.MyDamage ?? 0) - unit.BFArmor);
 
-    const [clickedArmorButtons, setClickedArmorButtons] = useState(Array(unit.BFArmor).fill(false).map((_, i) => i < armorDamage));
-    const [clickedSButtons, setClickedSButtons] = useState(Array(unit.BFStructure).fill(false).map((_, i) => i < structureDamage));
+    const [clickedArmorButtons, setClickedArmorButtons] = useState<boolean[]>(Array(unit.BFArmor).fill(false).map((_, i) => i < armorDamage));
+    const [clickedSButtons, setClickedSButtons] = useState<boolean[]>(Array(unit.BFStructure).fill(false).map((_, i) => i < structureDamage));
+
+    useEffect(() => {
+        setClickedArmorButtons(Array(unit.BFArmor).fill(false).map((_, i) => i < armorDamage));
+        setClickedSButtons(Array(unit.BFStructure).fill(false).map((_, i) => i < structureDamage));
+    }, [unit.MyDamage, unit.BFArmor, unit.BFStructure]);
 
     const handleArmorButtonClick = (index: number) => {
         const newClickedButtons = [...clickedArmorButtons];

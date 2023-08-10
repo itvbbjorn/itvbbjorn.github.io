@@ -51,10 +51,20 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
                             <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span>
                         </Stack>
                         <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
-                            <span className='game-properties'>SZ: {unit.BFSize}</span>
-                            <span className='game-properties'>TMM: {calculateTMM(unit)}</span>
-                            <span className='game-properties'>MV: {unit.BFMove}</span>
+                            <div className='game-properties-container'>
+                                <span className='game-properties-title'>SZ:</span>
+                                <span className='game-properties-value'>{unit.BFSize}</span>
+                            </div>
+                            <div className='game-properties-container'>
+                                <span className='game-properties-title'>TMM:</span>
+                                <span className='game-properties-value'>{calculateTMM(unit)}</span>
+                            </div>
+                            <div className='game-properties-container'>
+                                <span className='game-properties-title'>MV:</span>
+                                <span className='game-properties-value'>{unit.BFMove}</span>
+                            </div>
                         </Stack>
+
                     </Stack>
 
                     <AttackDamageTable unit={unit} />

@@ -4,7 +4,9 @@ import HeatPanel from './HeatPanel';
 import DamagePanel from './DamagePanel';
 import CriticalHitsPanel from './CriticalHitsPanel';
 import AttackDamageTable from './AttackDamageTable';
-import { relative } from 'path';
+import { Dialog } from '@fluentui/react';
+import { PrimaryButton, DefaultButton } from '@fluentui/react';
+
 
 interface UnitCardProps {
     unit: Unit;
@@ -42,11 +44,24 @@ const calculateTMM = (unit: Unit) => {
 }
 
 const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits, removeUnit }) => {
+    const [isDialogVisible, setDialogVisible] = React.useState(false);
+    const toggleDialog = () => {
+        setDialogVisible(!isDialogVisible);
+    };
+
     const handleRemove = () => {
-        if (typeof unit.MyId === 'number') { // Check if MyId is defined and is a number
+        console.log("removing" + unit.MyId)
+        toggleDialog();
+    };
+
+    const confirmRemove = () => {
+        if (typeof unit.MyId === 'number') {
+            console.log("confirm remove" + unit.MyId)
             removeUnit(unit.MyId);
         }
+        toggleDialog();
     };
+
     return (
         <div style={{ padding: 5, backgroundColor: 'darkgrey', border: 'solid black', borderRadius: 10, margin: 10, position: 'relative' }}>
             <Icon
@@ -54,6 +69,12 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                 onClick={handleRemove} // Callback to remove the unit
                 style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }} // Style to position the icon
             />
+            {/* <Icon
+                iconName="Delete"
+                onClick={() => { console.log(unit.MyId) }}
+                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 25 }}
+            /> */}
+
             <span style={{ fontSize: 24, fontWeight: 'bold' }}>{unit.Name}</span>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
                 <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 40 }}>
@@ -68,11 +89,21 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                             </Stack>
                             <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span>
                         </Stack>
-                        <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }} >
-                            <span className='game-properties'>SZ: {unit.BFSize}</span>
-                            <span className='game-properties'>TMM: {calculateTMM(unit)}</span>
-                            <span className='game-properties'>MV: {unit.BFMove}</span>
+                        <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
+                            <div className='game-properties-container'>
+                                <span className='game-properties-title'>SZ:</span>
+                                <span className='game-properties-value'>{unit.BFSize}</span>
+                            </div>
+                            <div className='game-properties-container'>
+                                <span className='game-properties-title'>TMM:</span>
+                                <span className='game-properties-value'>{calculateTMM(unit)}</span>
+                            </div>
+                            <div className='game-properties-container'>
+                                <span className='game-properties-title'>MV:</span>
+                                <span className='game-properties-value'>{unit.BFMove}</span>
+                            </div>
                         </Stack>
+
                     </Stack>
                     <AttackDamageTable unit={unit} />
                 </Stack>
@@ -98,7 +129,27 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
 
                 </Stack.Item>
             </Stack>
+            <Dialog
+                hidden={!isDialogVisible}
+                onDismiss={toggleDialog}
+                dialogContentProps={{
+
+                    title: 'Delete Unit',
+                    subText: `Are you sure you want to delete ${unit.Name}?`,
+                }}
+                modalProps={{
+                    isBlocking: true,
+                    styles: { main: { maxWidth: 450 } },
+                }}
+            >
+                <Stack horizontal tokens={{ childrenGap: 10 }}>
+                    <PrimaryButton onClick={confirmRemove} text="Confirm" />
+                    <DefaultButton onClick={toggleDialog} text="Cancel" />
+                </Stack>
+            </Dialog>
+
         </div>
+
     )
 }
 

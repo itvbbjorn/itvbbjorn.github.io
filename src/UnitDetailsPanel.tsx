@@ -35,6 +35,11 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
                 <DefaultButton
                     text="Add Unit"
                     onClick={handleAddUnit}
+                    style={{
+                        display: 'block',
+                        margin: '20px auto',
+                        width: 'fit-content'
+                    }}
                 />
             )}
         </Panel>
