@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DefaultButton, DetailsList, IColumn, Modal, Panel, ResponsiveMode, SelectionMode } from '@fluentui/react';
 import NameList from './NameList';
 import MyUnitCard from './MyUnitCard';
+import './Styles-MyUnits.css'
 
 const MyUnits: React.FC = () => {
     const [units, setUnits] = useState<Unit[]>([]);
@@ -70,36 +71,83 @@ const MyUnits: React.FC = () => {
     const closeModal = () => {
         setSelectedUnit(null);
     };
-
     return (
         <div>
+            <Panel>
+                {/* ... content within the panel */}
+            </Panel>
 
-            <DetailsList
-                items={units}
-                columns={columns}
-                selectionMode={SelectionMode.none}
-                onItemInvoked={onUnitClick} // Handle item click
-            />
-            <DefaultButton
-                text="Add Unit"
-                onClick={openPanel}
-            />
-            <Panel
-                isOpen={isNameListPanelOpen}
-                onDismiss={() => setIsNameListPanelOpen(false)}
-                headerText="Add Unit"
-            >
+            {units.map((unit) => (
+                <div className="cardContainer" key={unit.MyId} onClick={() => onUnitClick(unit)}>
+                    {/* Added onClick handler to the container div, but you can add it to MyUnitCard if you prefer */}
+                    <MyUnitCard
+                        unit={unit}
+                        updateHeat={updateHeat}
+                        updateDamage={updateDamage}
+                        updateHits={updateHits}
+                    />
+                </div>
+            ))}
+
+            <DefaultButton text="Add Unit" onClick={openPanel} />
+
+            <Panel isOpen={isNameListPanelOpen} onDismiss={() => setIsNameListPanelOpen(false)} headerText="Add Unit">
                 <NameList onAddUnit={addUnit} />
             </Panel>
-            <Modal
-                isOpen={selectedUnit !== null}
-                onDismiss={closeModal}
-                isBlocking={false}
-            >
-                {selectedUnit && <MyUnitCard unit={selectedUnit} updateHeat={updateHeat} updateDamage={updateDamage} updateHits={updateHits} />}
-            </Modal>
         </div>
     );
+
+    // return (
+    //     <div style={{}}>
+
+    //         {units.map((unit) => (
+    //             // <div style={{ border: 'solid black', borderRadius: 10, margin: 5, marginBottom: 10, marginTop: 10 }}>
+    //             <MyUnitCard
+    //                 key={unit.MyId}
+    //                 unit={unit}
+    //                 updateHeat={updateHeat}
+    //                 updateDamage={updateDamage}
+    //                 updateHits={updateHits}
+    //             />
+    //             // </div>
+    //         ))}
+
+    //         <DefaultButton text="Add Unit" onClick={openPanel} />
+
+    //         <Panel isOpen={isNameListPanelOpen} onDismiss={() => setIsNameListPanelOpen(false)} headerText="Add Unit">
+    //             <NameList onAddUnit={addUnit} />
+    //         </Panel>
+
+    //     </div>
+    // );
+    // return (
+    //     <div>
+    //         <DetailsList
+    //             items={units}
+    //             columns={columns}
+    //             selectionMode={SelectionMode.none}
+    //             onItemInvoked={onUnitClick} // Handle item click
+    //         />
+    //         <DefaultButton
+    //             text="Add Unit"
+    //             onClick={openPanel}
+    //         />
+    //         <Panel
+    //             isOpen={isNameListPanelOpen}
+    //             onDismiss={() => setIsNameListPanelOpen(false)}
+    //             headerText="Add Unit"
+    //         >
+    //             <NameList onAddUnit={addUnit} />
+    //         </Panel>
+    //         <Modal
+    //             isOpen={selectedUnit !== null}
+    //             onDismiss={closeModal}
+    //             isBlocking={false}
+    //         >
+    //             {selectedUnit && <MyUnitCard unit={selectedUnit} updateHeat={updateHeat} updateDamage={updateDamage} updateHits={updateHits} />}
+    //         </Modal>
+    //     </div>
+    // );
 };
 
 export default MyUnits;

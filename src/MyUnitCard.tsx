@@ -40,7 +40,7 @@ const calculateTMM = (unit: Unit) => {
 
 const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits }) => {
     return (
-        <div style={{ padding: 5 }}>
+        <div style={{ padding: 5, backgroundColor: 'darkgrey', border: 'solid black', borderRadius: 10, margin: 10 }}>
             <span style={{ fontSize: 24, fontWeight: 'bold' }}>{unit.Name}</span>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
                 <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 40 }}>
@@ -63,7 +63,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                     </Stack>
                     <AttackDamageTable unit={unit} />
                 </Stack>
-                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' } }}>
+                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'solid black' } }}>
                     <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
                 </Stack.Item>
 

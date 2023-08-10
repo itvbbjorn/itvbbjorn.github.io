@@ -1,0 +1,12 @@
+.cardContainer {
+    width: 358px;
+    /* or whatever width the modal had */
+    height: 506px;
+    /* or whatever height the modal had */
+    /* margin: 10px; */
+    /* Add some margin if you want space between the cards */
+    /* border: 1px solid #ccc; */
+    /* If the modal had a border, mimic it */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    /* If the modal had a shadow, mimic it */
+}

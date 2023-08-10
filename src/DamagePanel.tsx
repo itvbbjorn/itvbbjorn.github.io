@@ -7,8 +7,22 @@ interface DamagePanelProps {
     updateDamage: (damage: number) => void;
 }
 
+const calculateBackgroundColor = (damage: number, armor: number, structure: number) => {
+    const totalHealth = armor + structure;
+    const percentageDamage = damage / totalHealth;
+
+    if (damage >= armor) return 'red'; // Equal to or more than the armor value
+
+    if (percentageDamage === 0) return 'lightgrey'; // No damage
+    if (percentageDamage < 0.25) return 'white'; // Low damage
+    if (percentageDamage < 0.5) return 'yellow'; // Medium damage
+    if (percentageDamage < 0.75) return 'orange'; // High damage
+    return 'darkgray'; // Critical damage
+};
+
 
 const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
+
     const armorDamage = Math.min(unit.BFArmor, unit.MyDamage ?? 0);
     const structureDamage = Math.max(0, (unit.MyDamage ?? 0) - unit.BFArmor);
 
@@ -35,8 +49,17 @@ const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
         updateDamage(totalDamage);
     };
 
+
+    const totalDamage = clickedArmorButtons.filter(btn => btn).length + clickedSButtons.filter(btn => btn).length;
+    const percentageDamage = totalDamage / (unit.BFArmor + unit.BFStructure);
+    const backgroundColor = calculateBackgroundColor(totalDamage, unit.BFArmor, unit.BFStructure);
+    const isFullyDamaged = percentageDamage === 1;
+
     return (
-        <div style={{ border: 'solid black', borderRadius: 10, padding: 5, backgroundColor: 'lightgray', marginTop: 5 }}>
+        <div
+            style={{ border: 'solid black', borderRadius: 10, padding: 5, backgroundColor, marginTop: 5 }}
+            className={isFullyDamaged ? 'colored-stripes' : ''}
+        >
             <Stack>
                 <Stack horizontal>
                     <span style={{ fontWeight: 'bold' }}>A:</span>
