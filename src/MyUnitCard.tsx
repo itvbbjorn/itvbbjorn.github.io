@@ -62,6 +62,8 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
         toggleDialog();
     };
 
+    const moveSize = unit.BFMove.length > 3 ? '12px' : '18px';
+
     return (
         <div style={{ padding: 5, backgroundColor: 'darkgrey', border: 'solid black', borderRadius: 10, margin: 10, position: 'relative' }}>
             <Icon
@@ -77,7 +79,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
 
             <span style={{ fontSize: 24, fontWeight: 'bold' }}>{unit.Name}</span>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
-                <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 40 }}>
+                <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 30 }}>
                     <Stack>
                         <Stack horizontal style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -100,7 +102,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                             </div>
                             <div className='game-properties-container'>
                                 <span className='game-properties-title'>MV:</span>
-                                <span className='game-properties-value'>{unit.BFMove}</span>
+                                <span className='game-properties-value' style={{ fontSize: moveSize }}>{unit.BFMove}</span>
                             </div>
                         </Stack>
 
