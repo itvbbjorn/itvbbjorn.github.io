@@ -1,16 +1,19 @@
-import { Stack } from '@fluentui/react';
+import { Stack, Icon } from '@fluentui/react';
 import React from 'react';
 import HeatPanel from './HeatPanel';
 import DamagePanel from './DamagePanel';
 import CriticalHitsPanel from './CriticalHitsPanel';
 import AttackDamageTable from './AttackDamageTable';
+import { relative } from 'path';
 
 interface UnitCardProps {
     unit: Unit;
     updateHeat: (unitId: number, heat: string[]) => void;
     updateDamage: (unitId: number, damage: number) => void;
     updateHits: (unitId: number, type: string, hits: number) => void;
+    removeUnit: (unitId: number) => void;
 }
+
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
 // TODO: Handle units with multiple movement/TMM i.e Flea
 const extractNumbers = (input: string) => {
@@ -38,9 +41,19 @@ const calculateTMM = (unit: Unit) => {
     }
 }
 
-const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits }) => {
+const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits, removeUnit }) => {
+    const handleRemove = () => {
+        if (typeof unit.MyId === 'number') { // Check if MyId is defined and is a number
+            removeUnit(unit.MyId);
+        }
+    };
     return (
-        <div style={{ padding: 5, backgroundColor: 'darkgrey', border: 'solid black', borderRadius: 10, margin: 10 }}>
+        <div style={{ padding: 5, backgroundColor: 'darkgrey', border: 'solid black', borderRadius: 10, margin: 10, position: 'relative' }}>
+            <Icon
+                iconName="Delete" // Name of the "X" icon
+                onClick={handleRemove} // Callback to remove the unit
+                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }} // Style to position the icon
+            />
             <span style={{ fontSize: 24, fontWeight: 'bold' }}>{unit.Name}</span>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
                 <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 40 }}>
@@ -63,7 +76,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                     </Stack>
                     <AttackDamageTable unit={unit} />
                 </Stack>
-                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'solid black' } }}>
+                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'solid black', backgroundColor: 'white' } }}>
                     <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
                 </Stack.Item>
 

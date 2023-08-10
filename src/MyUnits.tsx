@@ -21,6 +21,10 @@ const MyUnits: React.FC = () => {
         setIsNameListPanelOpen(false); // Closing the NameList panel after adding the unit
     };
 
+    const removeUnit = (unitId: number) => {
+        setUnits(prevUnits => prevUnits.filter(unit => unit.MyId !== unitId));
+    };
+
     const updateHeat = (unitId: number, heat: string[]) => {
         setUnits(prevUnits =>
             prevUnits.map(unit => (unit.MyId === unitId ? { ...unit, MyHeat: heat } : unit))
@@ -81,6 +85,7 @@ const MyUnits: React.FC = () => {
                             updateHeat={updateHeat}
                             updateDamage={updateDamage}
                             updateHits={updateHits}
+                            removeUnit={removeUnit}
                         />
                     </div>
                 ))}
