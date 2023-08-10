@@ -1,6 +1,7 @@
 import { Stack } from '@fluentui/react';
 import React from 'react';
 import CriticalHitsCircles from './CriticalHitsCircles';
+import { Unit } from './Models/Unit';
 
 interface CriticalHitsPanelProps {
     unit: Unit;

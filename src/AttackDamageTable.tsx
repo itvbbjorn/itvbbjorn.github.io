@@ -1,4 +1,5 @@
 import React from 'react';
+import { Unit } from './Models/Unit';
 
 interface AttackDamageTableProps {
     unit: Unit;

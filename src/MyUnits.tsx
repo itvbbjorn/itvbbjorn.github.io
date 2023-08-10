@@ -3,6 +3,7 @@ import { DefaultButton, Panel } from '@fluentui/react';
 import NameList from './NameList';
 import MyUnitCard from './MyUnitCard';
 import './Styles-MyUnits.css';
+import { Unit } from './Models/Unit';
 
 const MyUnits: React.FC = () => {
     const [units, setUnits] = useState<Unit[]>([]);

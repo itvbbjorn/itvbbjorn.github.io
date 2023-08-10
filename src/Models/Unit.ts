@@ -1,4 +1,4 @@
-type Unit = {
+export type Unit = {
     Id: number;
     Name: string;
     GroupName: string;
@@ -66,5 +66,3 @@ type Unit = {
     MyMPHits?: number;
     MyWeaponHits?: number;
 };
-
-export {};

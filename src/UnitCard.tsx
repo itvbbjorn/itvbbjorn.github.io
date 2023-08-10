@@ -4,6 +4,7 @@ import HeatPanel from './HeatPanel';
 import DamagePanel from './DamagePanel';
 import CriticalHitsPanel from './CriticalHitsPanel';
 import AttackDamageTable from './AttackDamageTable';
+import { Unit } from './Models/Unit';
 
 interface UnitCardProps {
     unit: Unit;

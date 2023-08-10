@@ -6,6 +6,7 @@ import CriticalHitsPanel from './CriticalHitsPanel';
 import AttackDamageTable from './AttackDamageTable';
 import { Dialog } from '@fluentui/react';
 import { PrimaryButton, DefaultButton } from '@fluentui/react';
+import { Unit } from './Models/Unit';
 
 
 interface UnitCardProps {

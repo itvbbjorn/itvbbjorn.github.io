@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Styles-DamagePanel.css';
 import { Stack } from '@fluentui/react';
+import { Unit } from './Models/Unit';
 
 interface DamagePanelProps {
     unit: Unit;

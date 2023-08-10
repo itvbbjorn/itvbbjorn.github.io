@@ -2,6 +2,7 @@ import React from 'react';
 import { DefaultButton, Panel } from '@fluentui/react';
 import './Styles-UnitDetailsPanel.css';
 import UnitCard from './UnitCard';
+import { Unit } from './Models/Unit';
 
 interface UnitDetailsPanelProps {
     unit: Unit;

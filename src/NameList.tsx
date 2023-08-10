@@ -3,6 +3,7 @@ import { DetailsList, IColumn, TextField, CommandBarButton, SelectionMode } from
 import axios from 'axios';
 import UnitDetailsPanel from './UnitDetailsPanel';
 import Names from './Names';
+import { Unit } from './Models/Unit';
 
 interface NameListProps {
     onAddUnit: (unit: Unit) => void;

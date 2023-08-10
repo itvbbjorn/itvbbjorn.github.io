@@ -1,6 +1,7 @@
 import { Stack } from '@fluentui/react';
 import React, { useState, useEffect } from 'react';
 import './Styles-HeatPanel.css'
+import { Unit } from './Models/Unit';
 
 interface HeatPanelProps {
     unit: Unit;
