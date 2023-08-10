@@ -68,6 +68,7 @@ const MyUnits: React.FC = () => {
 
     return (
         <div>
+            <h1 style={{ textAlign: 'center', marginBottom: '10px' }}>Alpha Strike Force</h1>
             <div className="cardsGrid">
                 {units.map((unit) => (
                     <div className='cardContainer' key={unit.MyId}>
