@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from 'react';
-import { DetailsList, IColumn, TextField, CommandBarButton } from '@fluentui/react';
+import { DetailsList, IColumn, TextField, CommandBarButton, SelectionMode } from '@fluentui/react';
 import axios from 'axios';
 import UnitDetailsPanel from './UnitDetailsPanel';
 import Names from './Names';
@@ -32,17 +32,9 @@ const NameList: React.FC<NameListProps> = ({ onAddUnit }) => {
         if (response.data.Units.length === 1) {
             openUnitDetailsPanel(response.data.Units[0]);
         } else {
-            console.log("More than one unit returned. Finding exact match from:");
-            console.log(response.data);
             // The names sometimes have 2 trailing whitespaces
             const exactMatchUnit = response.data.Units.find((unit: Unit) => unit.Name.trim() === name.trim());
-            if (exactMatchUnit) {
-                openUnitDetailsPanel(exactMatchUnit);
-                console.log("Found exact match:");
-                console.log(exactMatchUnit);
-            } else {
-                console.log(exactMatchUnit);
-            }
+            openUnitDetailsPanel(exactMatchUnit);
         }
     };
 
@@ -76,8 +68,10 @@ const NameList: React.FC<NameListProps> = ({ onAddUnit }) => {
 
     return (
         <div>
-            <TextField label="Filter by name:" onChange={handleFilterChange} value={filter} />
-            <DetailsList items={items} columns={columns} />
+            <TextField label="Filter by name:" onChange={handleFilterChange} value={filter} placeholder='Start typing...' />
+            {filter && (
+                <DetailsList items={items} columns={columns} selectionMode={SelectionMode.none} />
+            )}
             <UnitDetailsPanel unit={selectedUnit} isOpen={isPanelOpen} onClose={() => setIsPanelOpen(false)} onAddUnit={onAddUnit} />
         </div>
     );

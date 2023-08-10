@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DefaultButton, Panel, Icon } from '@fluentui/react';
 import NameList from './NameList';
 import MyUnitCard from './MyUnitCard';
-import './Styles-MyUnits.css'
+import './Styles-MyUnits.css';
+import { parse } from 'path';
 
 const MyUnits: React.FC = () => {
     const [units, setUnits] = useState<Unit[]>([]);
+    const [lastId, setLastId] = useState(0);
     const [isNameListPanelOpen, setIsNameListPanelOpen] = useState(false);
-    const [lastId, setLastId] = useState(0); // Keep track of the last used MyId
+
+    // On component mount, retrieve the units from local storage
+    useEffect(() => {
+        const storedUnits = localStorage.getItem('units');
+        if (storedUnits) {
+            const parsedUnits: Unit[] = JSON.parse(storedUnits);
+            parsedUnits.forEach((unit) => {
+                addUnit(unit);
+            })
+            // console.log(parsedUnits)
+            // setUnits(parsedUnits);
+            // setLastId(parsedUnits.reduce((maxId, unit) => Math.max(maxId, unit.MyId ?? 0), 0));
+        }
+    }, []);
+
+    // Save the units to local storage whenever they change
+    useEffect(() => {
+        localStorage.setItem('units', JSON.stringify(units));
+    }, [units]);
 
     const addUnit = (unit: Unit) => {
         const newId = lastId + 1; // Increment the last used MyId
@@ -50,7 +70,7 @@ const MyUnits: React.FC = () => {
         <div>
             <div className="cardsGrid"> {/* Grid container */}
                 {units.map((unit) => (
-                    <div className='cardContainer'>
+                    <div className='cardContainer' key={unit.MyId}>
                         <MyUnitCard
                             unit={unit}
                             updateHeat={updateHeat}

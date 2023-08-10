@@ -31,9 +31,9 @@ const CriticalHitsPanel: React.FC<CriticalHitsPanelProps> = ({ unit, updateHits 
                     </Stack>
                     <Stack>
                         <span>+1 Heat/firing weapons</span>
-                        <span>+2TN</span>
-                        <span>1/2 MV</span>
-                        <span>-1 DMG</span>
+                        <span>+2TN Each</span>
+                        <span>1/2 MV Each</span>
+                        <span>-1 Damage Each</span>
                     </Stack>
                 </Stack>
             </div>
