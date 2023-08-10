@@ -30,7 +30,6 @@ const MyUnits: React.FC = () => {
         setLastId(prevLastId => {
             const newId = prevLastId + 1;
 
-            // Create a copy of the unit object, setting the MyId property
             const newUnit = { ...unit, MyId: newId };
 
             setUnits(prevUnits => [...prevUnits, newUnit]);
@@ -94,7 +93,8 @@ const MyUnits: React.FC = () => {
                     transform: 'translateX(-50%)',
                 }}
             >
-                <Icon iconName="Add" />
+                Add a unit
+                {/* <Icon iconName="Add" /> */}
             </DefaultButton>
 
 
