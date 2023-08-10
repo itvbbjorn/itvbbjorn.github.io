@@ -8,9 +8,18 @@ interface AttackDamageTableProps {
 const calculateAdjustedDamage = (baseDamage: number, weaponHits: number) => {
     return Math.max(0, baseDamage - weaponHits);
 };
+const calculateAdjustedRangeLabel = (baseRangeLabel: string, fcHits: number) => {
+    let adjustment = 0;
+    if(baseRangeLabel === "S") adjustment = 0 + (2 * fcHits);
+    if(baseRangeLabel === "M") adjustment = 2 + (2 * fcHits);
+    if(baseRangeLabel === "L") adjustment = 4 + (2 * fcHits);
+
+    return `${baseRangeLabel} (+${adjustment})`;
+};
 
 const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
     const weaponHits = unit.MyWeaponHits ?? 0;
+    const fcHits = unit.MyFCHits ?? 0;
 
     const adjustedShort = calculateAdjustedDamage(unit.BFDamageShort, weaponHits);
     const adjustedMedium = calculateAdjustedDamage(unit.BFDamageMedium, weaponHits);
@@ -20,9 +29,9 @@ const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center', border: 'solid black', marginBottom: 5 }}>
             <thead style={{ backgroundColor: 'black', color: 'white', borderRadius: 10 }}>
                 <tr>
-                    <th style={{ minWidth: 50, maxWidth: 100 }}>S (+0)</th>
-                    <th style={{ minWidth: 50, maxWidth: 100 }}>M (+2)</th>
-                    <th style={{ minWidth: 50, maxWidth: 100 }}>L (+4)</th>
+                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("S", fcHits)}</th>
+                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("M", fcHits)}</th>
+                    <th style={{ minWidth: 50, maxWidth: 100 }}>{calculateAdjustedRangeLabel("L", fcHits)}</th>
                 </tr>
             </thead>
             <tbody style={{ backgroundColor: 'lightgray' }}>
@@ -35,5 +44,7 @@ const AttackDamageTable: React.FC<AttackDamageTableProps> = ({ unit }) => {
         </table>
     );
 };
+
+
 
 export default AttackDamageTable;
