@@ -36,13 +36,18 @@ const calculateTMM = (unit: Unit) => {
 };
 
 const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
+    const moveSize = unit.BFMove.length > 3 ? '12px' : '18px';
+
     return (
-        <div>
+        <div style={{ padding: 5, backgroundColor: 'darkgrey', border: 'solid black', borderRadius: 10, margin: 10, position: 'relative' }}>
+
+            <span style={{ fontSize: 24, fontWeight: 'bold' }}>{unit.Name}</span>
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
-                <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 40 }}>
+                <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 30 }}>
                     <Stack>
                         <Stack horizontal style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Stack horizontal tokens={{ childrenGap: 10 }}>
+
                                 <Stack tokens={{ childrenGap: 5 }}>
                                     <span>Type: {unit.Type.Name}</span>
                                     <span>Role: {unit.Role.Name} </span>
@@ -50,7 +55,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
                             </Stack>
                             <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span>
                         </Stack>
-                        <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 5 }}>
+                        <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
                             <div className='game-properties-container'>
                                 <span className='game-properties-title'>SZ:</span>
                                 <span className='game-properties-value'>{unit.BFSize}</span>
@@ -61,17 +66,17 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
                             </div>
                             <div className='game-properties-container'>
                                 <span className='game-properties-title'>MV:</span>
-                                <span className='game-properties-value'>{unit.BFMove}</span>
+                                <span className='game-properties-value' style={{ fontSize: moveSize }}>{unit.BFMove}</span>
                             </div>
                         </Stack>
 
                     </Stack>
-
                     <AttackDamageTable unit={unit} />
                 </Stack>
-                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' } }}>
+                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'solid black', backgroundColor: 'white' } }}>
                     <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
                 </Stack.Item>
+
             </Stack>
             <HeatPanel unit={unit} updateHeat={() => { }} />
             <DamagePanel unit={unit} updateDamage={() => { }} />
@@ -84,12 +89,15 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
                         {unit.BFAbilities}
                     </div>
                     <CriticalHitsPanel unit={unit} updateHits={() => { }} />
+
                 </Stack.Item>
                 <Stack.Item grow={1}>
 
                 </Stack.Item>
             </Stack>
+
         </div>
+
     )
 }
 
