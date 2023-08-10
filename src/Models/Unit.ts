@@ -65,4 +65,5 @@ export type Unit = {
     MyFCHits?: number;
     MyMPHits?: number;
     MyWeaponHits?: number;
+    MySkill?: number;
 };

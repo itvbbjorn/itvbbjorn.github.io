@@ -144,9 +144,38 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                     </Stack>
                     <AttackDamageTable unit={unit} />
                 </Stack>
-                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'solid black', backgroundColor: 'white' } }}>
-                    <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
-                </Stack.Item>
+                <Stack.Item 
+    styles={{ 
+        root: { 
+            width: '35%', 
+            height: 'auto', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            border: 'solid black', 
+            backgroundColor: 'white',
+            position: 'relative' // Added for positioning overlay
+        } 
+    }}
+>
+    <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
+    <div 
+        style={{ 
+            position: 'absolute', 
+            top: '0%', 
+            right: '0%', 
+            fontSize: 'large', 
+            fontWeight: 'bold', 
+            color: 'black', 
+            background: 'white',
+            borderLeft: 'solid black',
+            borderBottom: 'solid black',
+            padding: '5px 10px'
+        }}
+    >
+        {unit.MySkill}
+    </div>
+</Stack.Item>
 
             </Stack>
             <HeatPanel unit={unit} updateHeat={updateHeat} />
