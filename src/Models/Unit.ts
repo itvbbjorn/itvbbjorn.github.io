@@ -66,3 +66,5 @@ type Unit = {
     MyMPHits?: number;
     MyWeaponHits?: number;
 };
+
+export {};
