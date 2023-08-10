@@ -50,15 +50,18 @@ const calculateTMM = (unit: Unit) => {
     return tmms.join('/');
 };
 const calculateAdjustedMV = (unit: Unit): string => {
-    const originalNumbers = unit.BFMove.split('/').map(mv => parseInt(mv) || 0);
-    return originalNumbers.map(original => {
-        let adjustedValue = original;
+    const originalParts = unit.BFMove.split('/');
+    return originalParts.map(part => {
+        const numberMatch = part.match(/\d+/g);
+        let numberValue = numberMatch ? parseInt(numberMatch[0]) : 0;
         for(let i = 0; i < (unit.MyMPHits || 0); i++) {
-            adjustedValue = Math.round(adjustedValue / 2);
+            numberValue = Math.round(numberValue / 2);
         }
-        return adjustedValue;
+
+        return part.replace(/\d+/g, numberValue.toString());
     }).join('/');
 };
+
 
 
 
