@@ -11,13 +11,13 @@ const calculateBackgroundColor = (damage: number, armor: number, structure: numb
     const totalHealth = armor + structure;
     const percentageDamage = damage / totalHealth;
 
-    if (damage >= armor) return 'red'; // Equal to or more than the armor value
+    if (damage >= armor) return 'red';
 
-    if (percentageDamage === 0) return 'lightgrey'; // No damage
-    if (percentageDamage < 0.25) return 'lightgrey'; // Low damage
-    if (percentageDamage < 0.5) return 'yellow'; // Medium damage
-    if (percentageDamage < 0.75) return 'orange'; // High damage
-    return 'darkgray'; // Critical damage
+    if (percentageDamage === 0) return 'lightgrey';
+    if (percentageDamage < 0.25) return 'lightgrey';
+    if (percentageDamage < 0.5) return 'yellow';
+    if (percentageDamage < 0.75) return 'orange';
+    return 'darkgray';
 };
 
 const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
@@ -28,9 +28,13 @@ const DamagePanel: React.FC<DamagePanelProps> = ({ unit, updateDamage }) => {
     const [clickedSButtons, setClickedSButtons] = useState<boolean[]>(Array(unit.BFStructure).fill(false).map((_, i) => i < structureDamage));
 
     useEffect(() => {
-        setClickedArmorButtons(Array(unit.BFArmor).fill(false).map((_, i) => i < armorDamage));
-        setClickedSButtons(Array(unit.BFStructure).fill(false).map((_, i) => i < structureDamage));
+        const armorDamageCalculation = Math.min(unit.BFArmor, unit.MyDamage ?? 0);
+        const structureDamageCalculation = Math.max(0, (unit.MyDamage ?? 0) - unit.BFArmor);
+
+        setClickedArmorButtons(Array(unit.BFArmor).fill(false).map((_, i) => i < armorDamageCalculation));
+        setClickedSButtons(Array(unit.BFStructure).fill(false).map((_, i) => i < structureDamageCalculation));
     }, [unit.MyDamage, unit.BFArmor, unit.BFStructure]);
+
 
     const handleArmorButtonClick = (index: number) => {
         const newClickedButtons = [...clickedArmorButtons];

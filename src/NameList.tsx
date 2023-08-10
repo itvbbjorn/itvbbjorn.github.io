@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { DetailsList, IColumn, TextField, CommandBarButton, SelectionMode } from '@fluentui/react';
 import axios from 'axios';
 import UnitDetailsPanel from './UnitDetailsPanel';

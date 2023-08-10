@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { DefaultButton, Panel, Icon } from '@fluentui/react';
+import { DefaultButton, Panel } from '@fluentui/react';
 import NameList from './NameList';
 import MyUnitCard from './MyUnitCard';
 import './Styles-MyUnits.css';
-import { parse } from 'path';
 
 const MyUnits: React.FC = () => {
     const [units, setUnits] = useState<Unit[]>([]);
-    const [lastId, setLastId] = useState(0);
+    const [, setLastId] = useState(0);
     const [isNameListPanelOpen, setIsNameListPanelOpen] = useState(false);
 
     // On component mount, retrieve the units from local storage
@@ -33,9 +32,9 @@ const MyUnits: React.FC = () => {
             const newUnit = { ...unit, MyId: newId };
 
             setUnits(prevUnits => [...prevUnits, newUnit]);
-            setIsNameListPanelOpen(false); // Closing the NameList panel after adding the unit
+            setIsNameListPanelOpen(false);
 
-            return newId; // Return the new lastId to update the state
+            return newId;
         });
     };
 
@@ -68,7 +67,7 @@ const MyUnits: React.FC = () => {
 
     return (
         <div>
-            <div className="cardsGrid"> {/* Grid container */}
+            <div className="cardsGrid">
                 {units.map((unit) => (
                     <div className='cardContainer' key={unit.MyId}>
                         <MyUnitCard
@@ -94,7 +93,6 @@ const MyUnits: React.FC = () => {
                 }}
             >
                 Add a unit
-                {/* <Icon iconName="Add" /> */}
             </DefaultButton>
 
 
