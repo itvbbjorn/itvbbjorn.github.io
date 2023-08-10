@@ -1,1 +1,1 @@
-Small webapp Battletech Alpha Strike
+Small webapp for Battletech Alpha Strike
