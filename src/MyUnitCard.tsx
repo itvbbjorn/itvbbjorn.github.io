@@ -18,13 +18,19 @@ interface UnitCardProps {
 }
 
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
-const extractNumbers = (input: string): number[] => {
+const extractNumbers = (input: string, mphits: number): number[] => {
     const parts = input.split('/');
     return parts.map(part => {
         const result = part.match(/\d+/g);
-        return result ? parseInt(result.join('')) : 0;
+        let numberValue = result ? parseInt(result.join('')) : 0;
+        // Half MP for critical hits
+        for(let i = 0; i < mphits; i++) {
+            numberValue = Math.round(numberValue / 2);
+        }
+        return numberValue;
     });
 };
+
 
 const getTMM = (moveDistance: number) => {
     switch (true) {
@@ -39,10 +45,22 @@ const getTMM = (moveDistance: number) => {
 };
 // handles cases where a unit has multiple TMMs
 const calculateTMM = (unit: Unit) => {
-    const moveDistances = extractNumbers(unit.BFMove);
+    const moveDistances = extractNumbers(unit.BFMove, unit.MyMPHits || 0);
     const tmms = moveDistances.map(getTMM);
     return tmms.join('/');
 };
+const calculateAdjustedMV = (unit: Unit): string => {
+    const originalNumbers = unit.BFMove.split('/').map(mv => parseInt(mv) || 0);
+    return originalNumbers.map(original => {
+        let adjustedValue = original;
+        for(let i = 0; i < (unit.MyMPHits || 0); i++) {
+            adjustedValue = Math.round(adjustedValue / 2);
+        }
+        return adjustedValue;
+    }).join('/');
+};
+
+
 
 const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits, removeUnit }) => {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
@@ -103,7 +121,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                             </div>
                             <div className='game-properties-container'>
                                 <span className='game-properties-title'>MV:</span>
-                                <span className='game-properties-value' style={{ fontSize: moveSize }}>{unit.BFMove}</span>
+                                <span className='game-properties-value' style={{ fontSize: moveSize }}>{calculateAdjustedMV(unit)}</span>
                             </div>
                         </Stack>
 
