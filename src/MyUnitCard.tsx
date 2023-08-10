@@ -124,7 +124,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                                     <span>Role: {unit.Role.Name} </span>
                                 </Stack>
                             </Stack>
-                            <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span>
+                            {/* <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.MySkill}</span> */}
                         </Stack>
                         <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
                             <div className='game-properties-container'>
@@ -166,9 +166,26 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
             right: '0%', 
             fontSize: 'large', 
             fontWeight: 'bold', 
+            color: 'darkred', 
+            // background: 'white',
+            // borderLeft: 'solid black',
+            // borderBottom: 'solid black',
+            padding: '5px 5px'
+        }}
+    >
+        {unit.BFPointValue}
+        
+    </div>
+    <div 
+        style={{ 
+            position: 'absolute', 
+            top: '0%', 
+            left: '0%', 
+            fontSize: 'large', 
+            fontWeight: 'bold', 
             color: 'black', 
             background: 'white',
-            borderLeft: 'solid black',
+            borderRight: 'solid black',
             borderBottom: 'solid black',
             padding: '5px 10px'
         }}
