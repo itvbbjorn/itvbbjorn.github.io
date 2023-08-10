@@ -10,3 +10,11 @@
     /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
     /* If the modal had a shadow, mimic it */
 }
+
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(358px, 1fr));
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+}

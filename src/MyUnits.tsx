@@ -73,21 +73,18 @@ const MyUnits: React.FC = () => {
     };
     return (
         <div>
-            <Panel>
-                {/* ... content within the panel */}
-            </Panel>
-
-            {units.map((unit) => (
-                <div className="cardContainer" key={unit.MyId} onClick={() => onUnitClick(unit)}>
-                    {/* Added onClick handler to the container div, but you can add it to MyUnitCard if you prefer */}
-                    <MyUnitCard
-                        unit={unit}
-                        updateHeat={updateHeat}
-                        updateDamage={updateDamage}
-                        updateHits={updateHits}
-                    />
-                </div>
-            ))}
+            <div className="cardsGrid"> {/* Grid container */}
+                {units.map((unit) => (
+                    <div className="cardContainer" key={unit.MyId} onClick={() => onUnitClick(unit)}>
+                        <MyUnitCard
+                            unit={unit}
+                            updateHeat={updateHeat}
+                            updateDamage={updateDamage}
+                            updateHits={updateHits}
+                        />
+                    </div>
+                ))}
+            </div>
 
             <DefaultButton text="Add Unit" onClick={openPanel} />
 
