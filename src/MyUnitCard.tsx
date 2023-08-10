@@ -17,31 +17,31 @@ interface UnitCardProps {
 }
 
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
-// TODO: Handle units with multiple movement/TMM i.e Flea
-const extractNumbers = (input: string) => {
-    const result = input.match(/\d+/g);
-    return result ? parseInt(result.join('')) : 0;
-}
+const extractNumbers = (input: string): number[] => {
+    const parts = input.split('/');
+    return parts.map(part => {
+        const result = part.match(/\d+/g);
+        return result ? parseInt(result.join('')) : 0;
+    });
+};
 
-const calculateTMM = (unit: Unit) => {
-    let moveDistance = extractNumbers(unit.BFMove);
+const getTMM = (moveDistance: number) => {
     switch (true) {
-        case moveDistance <= 4:
-            return 0;
-        case moveDistance <= 8:
-            return 1;
-        case moveDistance <= 12:
-            return 2;
-        case moveDistance <= 18:
-            return 3;
-        case moveDistance <= 34:
-            return 4;
-        case moveDistance <= 48:
-            return 5;
-        default:
-            return 6;
+        case moveDistance <= 4: return 0;
+        case moveDistance <= 8: return 1;
+        case moveDistance <= 12: return 2;
+        case moveDistance <= 18: return 3;
+        case moveDistance <= 34: return 4;
+        case moveDistance <= 48: return 5;
+        default: return 6;
     }
-}
+};
+// handles cases where a unit has multiple TMMs
+const calculateTMM = (unit: Unit) => {
+    const moveDistances = extractNumbers(unit.BFMove);
+    const tmms = moveDistances.map(getTMM);
+    return tmms.join('/');
+};
 
 const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits, removeUnit }) => {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
