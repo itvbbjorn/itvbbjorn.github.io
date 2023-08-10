@@ -18,9 +18,6 @@ const MyUnits: React.FC = () => {
             parsedUnits.forEach((unit) => {
                 addUnit(unit);
             })
-            // console.log(parsedUnits)
-            // setUnits(parsedUnits);
-            // setLastId(parsedUnits.reduce((maxId, unit) => Math.max(maxId, unit.MyId ?? 0), 0));
         }
     }, []);
 
@@ -30,15 +27,19 @@ const MyUnits: React.FC = () => {
     }, [units]);
 
     const addUnit = (unit: Unit) => {
-        const newId = lastId + 1; // Increment the last used MyId
-        setLastId(newId); // Update the state with the new lastId
+        setLastId(prevLastId => {
+            const newId = prevLastId + 1;
 
-        // Create a copy of the unit object, setting the MyId property
-        const newUnit = { ...unit, MyId: newId };
+            // Create a copy of the unit object, setting the MyId property
+            const newUnit = { ...unit, MyId: newId };
 
-        setUnits([...units, newUnit]);
-        setIsNameListPanelOpen(false); // Closing the NameList panel after adding the unit
+            setUnits(prevUnits => [...prevUnits, newUnit]);
+            setIsNameListPanelOpen(false); // Closing the NameList panel after adding the unit
+
+            return newId; // Return the new lastId to update the state
+        });
     };
+
 
     const removeUnit = (unitId: number) => {
         setUnits(prevUnits => prevUnits.filter(unit => unit.MyId !== unitId));
