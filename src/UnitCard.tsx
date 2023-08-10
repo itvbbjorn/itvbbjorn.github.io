@@ -59,7 +59,9 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
 
                     <AttackDamageTable unit={unit} />
                 </Stack>
-                <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image'></img>
+                <Stack.Item styles={{ root: { width: '35%', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' } }}>
+                    <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
+                </Stack.Item>
             </Stack>
             <HeatPanel unit={unit} updateHeat={() => { }} />
             <DamagePanel unit={unit} updateDamage={() => { }} />

@@ -1,5 +1,6 @@
 import { Stack } from '@fluentui/react';
 import React, { useState } from 'react';
+import './Styles-HeatPanel.css'
 
 interface HeatPanelProps {
     unit: Unit;
@@ -55,27 +56,91 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit, updateHeat }) => {
 
     const handleButtonClick = (key: keyof typeof clicked) => {
         setClicked(prev => {
-            const newClicked = { ...prev, [key]: !prev[key] };
-            // Here, you'll need to convert `newClicked` to the desired heat array format
+            const newClicked = { ...prev };
+
+            // Find the rightmost filled key
+            const rightmostFilledKey = (['S', '3', '2', '1'] as ClickedKeys[]).find(k => prev[k]);
+
+            // If the clicked key is the rightmost filled key, unfill all buttons
+            if (key === rightmostFilledKey) {
+                newClicked['1'] = false;
+                newClicked['2'] = false;
+                newClicked['3'] = false;
+                newClicked['S'] = false;
+            } else {
+                (['1', '2', '3', 'S'] as ClickedKeys[]).forEach((k) => {
+                    if (k <= key) {
+                        newClicked[k] = true;
+                    } else {
+                        newClicked[k] = false;
+                    }
+                });
+            }
+
             const newHeat = convertClickedToHeat(newClicked);
             updateHeat(unit.MyId!, newHeat);
+
             return newClicked;
         });
     };
 
-    const getButtonColor = (key: keyof typeof clicked) => {
-        switch (key) {
-            case '1':
-                return clicked[key] ? 'white' : 'yellow';
-            case '2':
-                return clicked[key] ? 'white' : 'orange';
-            case '3':
-                return clicked[key] ? 'white' : 'red';
-            case 'S':
-                return clicked[key] ? 'white' : 'darkred';
-            default:
-                return 'white';
+    const getButtonClass = (key: keyof typeof clicked) => {
+        return clicked[key] ? 'striped-background' : '';
+    };
+
+    const stripeButtons = (key: keyof typeof clicked) => {
+        const baseColor = (() => {
+            switch (key) {
+                case '1':
+                    return 'yellow';
+                case '2':
+                    return 'orange';
+                case '3':
+                    return 'red';
+                case 'S':
+                    return 'darkred';
+                default:
+                    return 'white';
+            }
+        })();
+
+        if (clicked[key]) {
+            return `repeating-linear-gradient(
+                -45deg,
+                black,
+                black 5px,
+                ${baseColor} 5px,
+                ${baseColor} 10px
+            )`;
         }
+
+        return baseColor;
+    };
+
+    const getHeatScaleColor = () => {
+        const filledButtonsCount = Object.values(clicked).filter(value => value).length;
+        switch (filledButtonsCount) {
+            case 0:
+                return 'lightgrey'; // color when no buttons are filled
+            case 1:
+                return 'yellow';    // color when one button is filled
+            case 2:
+                return 'orange';    // color when two buttons are filled
+            case 3:
+                return 'red';       // color when three buttons are filled
+            case 4:
+                return 'darkred';   // color when all buttons are filled
+            default:
+                return 'darkgrey';  // default color
+        }
+    };
+
+    const heatScaleText = clicked['S'] ? 'SHUT DOWN' : 'HEAT SCALE';
+
+    const getHeatScaleTextColor = () => {
+        if (clicked['S']) return 'yellow';
+        if (clicked['1']) return 'black';
+        return 'white'; // default color
     };
 
     const getTextColor = (key: keyof typeof clicked) => {
@@ -89,15 +154,27 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit, updateHeat }) => {
                     <span style={{ fontWeight: 'bold' }}>OV: <span style={{ color: 'darkred' }}>{unit.BFOverheat}</span></span>
                 </Stack.Item>
                 <Stack.Item grow={1}>
-                    <span style={{ fontWeight: 'bold', backgroundColor: 'darkgrey', color: 'white', padding: 5, borderRadius: 10 }}>HEAT SCALE</span>
+                    <span
+                        style={{
+                            fontWeight: 'bold',
+                            backgroundColor: getHeatScaleColor(),
+                            color: getHeatScaleTextColor(),
+                            padding: 5,
+                            borderRadius: 10
+                        }}
+                    >
+                        {heatScaleText}
+                    </span>
                 </Stack.Item>
+
                 <Stack.Item grow={1}>
                     <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                         {(['1', '2', '3', 'S'] as (keyof typeof clicked)[]).map(key => (
                             <button
                                 key={key}
+                                className={getButtonClass(key)}
                                 style={{
-                                    background: getButtonColor(key),
+                                    background: stripeButtons(key),
                                     width: '30px',
                                     height: '30px',
                                     fontWeight: 'bold',
@@ -109,6 +186,7 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit, updateHeat }) => {
                             >
                                 {key}
                             </button>
+
                         ))}
                     </span>
                 </Stack.Item>

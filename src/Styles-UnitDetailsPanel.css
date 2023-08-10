@@ -1,9 +1,16 @@
 .unit-image {
-    width: 25%;
-    float: right;
-    margin: 10px;
+    width: 100%;
+    /* It will take full width of the container */
+    max-height: 100%;
+    /* It will not exceed the height of the container */
     object-fit: contain;
+    /* It will maintain the aspect ratio */
+    margin: auto;
+    /* Centering the image */
+    display: block;
+    /* Making it a block-level element */
 }
+
 
 .game-properties-stack {
     display: flex;
