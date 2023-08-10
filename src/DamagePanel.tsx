@@ -12,12 +12,12 @@ const calculateBackgroundColor = (damage: number, armor: number, structure: numb
     const totalHealth = armor + structure;
     const percentageDamage = damage / totalHealth;
 
-    if (damage >= armor) return 'red';
+    if (damage >= armor) return 'firebrick';
 
     if (percentageDamage === 0) return 'lightgrey';
     if (percentageDamage < 0.25) return 'lightgrey';
-    if (percentageDamage < 0.5) return 'yellow';
-    if (percentageDamage < 0.75) return 'orange';
+    if (percentageDamage < 0.5) return 'gold';
+    if (percentageDamage < 0.75) return 'darkorange';
     return 'darkgray';
 };
 

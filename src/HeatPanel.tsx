@@ -104,11 +104,11 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit, updateHeat }) => {
         const baseColor = (() => {
             switch (key) {
                 case '1':
-                    return 'yellow';
+                    return 'gold';
                 case '2':
-                    return 'orange';
+                    return 'darkorange';
                 case '3':
-                    return 'red';
+                    return 'firebrick';
                 case 'S':
                     return 'darkred';
                 default:
@@ -135,11 +135,11 @@ const HeatPanel: React.FC<HeatPanelProps> = ({ unit, updateHeat }) => {
             case 0:
                 return 'lightgrey'; // color when no buttons are filled
             case 1:
-                return 'yellow';    // color when one button is filled
+                return 'gold';    // color when one button is filled
             case 2:
-                return 'orange';    // color when two buttons are filled
+                return 'darkorange';    // color when two buttons are filled
             case 3:
-                return 'red';       // color when three buttons are filled
+                return 'firebrick';       // color when three buttons are filled
             case 4:
                 return 'darkred';   // color when all buttons are filled
             default:
