@@ -96,23 +96,55 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
         }
         toggleDialog();
     };
+    const getFontSizeForName = (name: string): string => {
+        if (name.length > 46) {
+            return '10px'
+        } else if (name.length > 38) {
+            return '12px';
+        } else if (name.length > 32) {
+            return '14px';
+        } else if (name.length > 26) {
+            return '18px';
+        } else if (name.length > 18) {
+            return '20px';
+        } else {
+            return '24px';  // default size
+        }
+    };
 
     const moveSize = unit.BFMove.length > 3 ? '12px' : '18px';
 
     return (
-        <div style={{ padding: 5, backgroundColor: 'darkgrey', border: 'solid black', borderRadius: 10, margin: 10, position: 'relative' }}>
+        <div style={{ 
+            padding: 5, 
+            backgroundColor: 'darkgrey', 
+            border: 'solid black', 
+            borderRadius: 10, 
+            margin: 10, 
+            position: 'relative',
+            width: '322px',
+            height: '493px',
+            overflow: 'hidden'  
+        }}>
             <Icon
-                iconName="Delete" // Name of the "X" icon
-                onClick={handleRemove} // Callback to remove the unit
-                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }} // Style to position the icon
+                iconName="Delete" 
+                onClick={handleRemove} 
+                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }} 
             />
-            {/* <Icon
-                iconName="Delete"
-                onClick={() => { console.log(unit.MyId) }}
-                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 25 }}
-            /> */}
+           
 
-            <span style={{ fontSize: 24, fontWeight: 'bold' }}>{unit.Name}</span>
+<div style={{
+    height: '32px', 
+    display: 'flex',
+    justifyContent: 'left',  
+    alignItems: 'center',  
+    overflow: 'hidden'  
+}}>
+    <span style={{ fontSize: getFontSizeForName(unit.Name), fontWeight: 'bold' }}>
+        {unit.Name}
+    </span>
+</div>
+
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
                 <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 30 }}>
                     <Stack>
@@ -124,7 +156,6 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                                     <span>Role: {unit.Role.Name} </span>
                                 </Stack>
                             </Stack>
-                            {/* <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.MySkill}</span> */}
                         </Stack>
                         <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
                             <div className='game-properties-container'>
@@ -154,7 +185,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
             justifyContent: 'center', 
             border: 'solid black', 
             backgroundColor: 'white',
-            position: 'relative' // Added for positioning overlay
+            position: 'relative' 
         } 
     }}
 >
@@ -167,9 +198,6 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
             fontSize: 'large', 
             fontWeight: 'bold', 
             color: 'darkred', 
-            // background: 'white',
-            // borderLeft: 'solid black',
-            // borderBottom: 'solid black',
             padding: '5px 5px'
         }}
     >

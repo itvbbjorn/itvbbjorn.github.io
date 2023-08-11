@@ -73,7 +73,7 @@ const NameList: React.FC<NameListProps> = ({ onAddUnit }) => {
 
     return (
         <div>
-            <TextField label="Filter by name:" onChange={handleFilterChange} value={filter} placeholder='Start typing...' disabled={isLoading} /> {/* Disable input during loading */}
+            <TextField autoComplete='off' label="Filter by name:" onChange={handleFilterChange} value={filter} placeholder='Start typing...' disabled={isLoading} /> {/* Disable input during loading */}
             {isLoading ? ( // Step 3: Conditionally Render
                 <Stack horizontalAlign="center" verticalAlign="center" styles={{ root: { height: 50 } }}> {/* Centering the spinner */}
                     <Spinner label="Loading..." ariaLive="assertive" labelPosition="right" />
