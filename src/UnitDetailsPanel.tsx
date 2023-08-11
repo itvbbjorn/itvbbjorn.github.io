@@ -29,25 +29,62 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
     const calculatePointValue = (baseValue: number, skillDifference: number) => {
         let increaseAdjustment;
         let decreaseAdjustment;
-
-        if (baseValue <= 52) {
-            increaseAdjustment = Math.floor((baseValue + 5) / 10);
+    
+        if (baseValue <= 7) {
+            increaseAdjustment = 1;
+        } else if (baseValue <= 12) {
+            increaseAdjustment = 2;
+        } else if (baseValue <= 17) {
+            increaseAdjustment = 3;
+        } else if (baseValue <= 22) {
+            increaseAdjustment = 4;
+        } else if (baseValue <= 27) {
+            increaseAdjustment = 5;
+        } else if (baseValue <= 32) {
+            increaseAdjustment = 6;
+        } else if (baseValue <= 37) {
+            increaseAdjustment = 7;
+        } else if (baseValue <= 42) {
+            increaseAdjustment = 8;
+        } else if (baseValue <= 47) {
+            increaseAdjustment = 9;
+        } else if (baseValue <= 52) {
+            increaseAdjustment = 10;
         } else {
-            increaseAdjustment = 10 + Math.ceil((baseValue - 52) / 5);
+            increaseAdjustment = 10 + Math.floor((baseValue - 53) / 5) + 1;
         }
-
-        if (baseValue <= 104) {
-            decreaseAdjustment = Math.floor((baseValue + 10) / 10);
+    
+        if (baseValue <= 14) {
+            decreaseAdjustment = 1;
+        } else if (baseValue <= 24) {
+            decreaseAdjustment = 2;
+        } else if (baseValue <= 34) {
+            decreaseAdjustment = 3;
+        } else if (baseValue <= 44) {
+            decreaseAdjustment = 4;
+        } else if (baseValue <= 54) {
+            decreaseAdjustment = 5;
+        } else if (baseValue <= 64) {
+            decreaseAdjustment = 6;
+        } else if (baseValue <= 74) {
+            decreaseAdjustment = 7;
+        } else if (baseValue <= 84) {
+            decreaseAdjustment = 8;
+        } else if (baseValue <= 94) {
+            decreaseAdjustment = 9;
+        } else if (baseValue <= 104) {
+            decreaseAdjustment = 10;
         } else {
-            decreaseAdjustment = 10 + Math.ceil((baseValue - 104) / 10);
+            decreaseAdjustment = 10 + Math.floor((baseValue - 105) / 10) + 1;
         }
-
+    
         if (skillDifference < 0) {
             return baseValue + (increaseAdjustment * Math.abs(skillDifference));
         } else {
             return baseValue - (decreaseAdjustment * skillDifference);
         }
     };
+    
 
 
 
