@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { DefaultButton, Panel, Dialog, TextField } from '@fluentui/react';
+import React, { useState, useEffect } from 'react';
+import { DefaultButton, Panel, Dialog, TextField, Stack, FontSizes } from '@fluentui/react';
 import './Styles-UnitDetailsPanel.css';
 import UnitCard from './UnitCard';
 import { Unit } from './Models/Unit';
+import { blob } from 'stream/consumers';
 
 interface UnitDetailsPanelProps {
     unit: Unit;
@@ -12,28 +13,68 @@ interface UnitDetailsPanelProps {
 }
 
 const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClose, onAddUnit }) => {
+    useEffect(() => {
+        // Reset skill value when unit changes
+        setSkillValue(defaultSkill);
+    }, [unit]);
+
     const [isSkillDialogOpen, setIsSkillDialogOpen] = useState(false);
-    const [skillValue, setSkillValue] = useState<string>("");
+    const defaultSkill: number = 4;
+    const [skillValue, setSkillValue] = useState<number>(defaultSkill);
 
     if (!unit) {
         return null;
     }
 
-    const handleAddUnit = () => {
-        setIsSkillDialogOpen(true);
+    const calculatePointValue = (baseValue: number, skillDifference: number) => {
+        let increaseAdjustment;
+        let decreaseAdjustment;
+
+        if (baseValue <= 52) {
+            increaseAdjustment = Math.floor((baseValue + 5) / 10);
+        } else {
+            increaseAdjustment = 10 + Math.ceil((baseValue - 52) / 5);
+        }
+
+        if (baseValue <= 104) {
+            decreaseAdjustment = Math.floor((baseValue + 10) / 10);
+        } else {
+            decreaseAdjustment = 10 + Math.ceil((baseValue - 104) / 10);
+        }
+
+        if (skillDifference < 0) {
+            return baseValue + (increaseAdjustment * Math.abs(skillDifference));
+        } else {
+            return baseValue - (decreaseAdjustment * skillDifference);
+        }
     };
 
-    const handleConfirmSkill = () => {
-        const parsedValue = parseInt(skillValue);
-        if (parsedValue >= 0 && parsedValue <= 9) {
-            unit.MySkill = parsedValue;
-            if (onAddUnit) {
-                onAddUnit(unit);
-            }
+
+
+
+    const handleAddUnit = () => {
+        const calculatedValue = calculatePointValue(unit.BFPointValue, skillValue - defaultSkill);
+        unit.MyCalculatedPointValue = calculatedValue;
+
+        unit.MySkill = skillValue;
+
+        if (onAddUnit) {
+            onAddUnit(unit);
         }
-        setSkillValue(""); 
-        setIsSkillDialogOpen(false);
         onClose();
+    };
+
+
+    const incrementSkill = () => {
+        if (skillValue < 9) {
+            setSkillValue(prevSkill => prevSkill + 1);
+        }
+    };
+
+    const decrementSkill = () => {
+        if (skillValue > 0) {
+            setSkillValue(prevSkill => prevSkill - 1);
+        }
     };
 
     return (
@@ -44,6 +85,56 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
             closeButtonAriaLabel="Close"
         >
             <UnitCard unit={unit}></UnitCard>
+            <div style={{
+                textAlign: 'center',
+                margin: '10px 0'
+            }}>
+            </div>
+            <Stack horizontal style={{ margin: '10px 0', alignItems: 'center', justifyContent: 'center' }}>
+
+                <div style={{ width: 'auto', textAlign: 'center', marginRight: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 'bold' }}>Skill:</span>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: '10px'
+                    }}>
+                        <DefaultButton
+                            onClick={decrementSkill}
+                            text="-"
+                            style={{
+                                width: '35px',
+                                height: '35px',
+                                minWidth: '0',
+                                padding: '0',
+                            }}
+                        />
+                        <span style={{ margin: '0 10px', fontSize: 30, fontWeight: 'bold' }}>{skillValue}</span>
+                        <DefaultButton
+                            onClick={incrementSkill}
+                            text="+"
+                            style={{
+                                width: '35px',
+                                height: '35px',
+                                minWidth: '0',
+                                padding: '0',
+                            }}
+                        />
+                    </div>
+                </div>
+
+                <div style={{ width: 'auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 'bold', marginRight: '10px' }}>Point Value:</span>
+                    <span style={{ color: 'darkred', fontSize: 30, fontWeight: 'bold', marginTop: '10px' }}>{calculatePointValue(unit.BFPointValue, skillValue - defaultSkill)}</span>
+                </div>
+
+            </Stack>
+
+
+
+
+
             {onAddUnit && (
                 <DefaultButton
                     text="Add unit to force"
@@ -55,37 +146,8 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
                     }}
                 />
             )}
-            
-            <Dialog
-                hidden={!isSkillDialogOpen}
-                onDismiss={() => setIsSkillDialogOpen(false)}
-                dialogContentProps={{
-                    title: 'Skill',
-                    subText: 'Enter a Skill value between 0-9.',
-                }}
-                modalProps={{
-                    isBlocking: true,
-                    styles: { main: { maxWidth: 450 } },
-                }}
-            >
-                <TextField
-                    value={skillValue}
-                    onChange={(_, newValue) => setSkillValue(newValue || "")}
-                    type="number"
-                    max={9}
-                    min={0}
-                />
-                <DefaultButton
-                    text="Confirm"
-                    onClick={handleConfirmSkill}
-                    style={{
-                        display: 'block',
-                        margin: '20px auto',
-                        width: 'fit-content'
-                    }}
-                />
-            </Dialog>
         </Panel>
+
     );
 };
 

@@ -54,7 +54,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
                                     <span>Role: {unit.Role.Name} </span>
                                 </Stack>
                             </Stack>
-                            <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span>
+                            {/* <span style={{ fontSize: 30, fontWeight: 'bold', color: 'darkred' }}>{unit.BFPointValue}</span> */}
                         </Stack>
                         <Stack className='game-properties-stack' horizontal tokens={{ childrenGap: 10 }}>
                             <div className='game-properties-container'>

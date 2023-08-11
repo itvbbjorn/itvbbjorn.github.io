@@ -201,7 +201,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
             padding: '5px 5px'
         }}
     >
-        {unit.BFPointValue}
+        {unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue}
         
     </div>
     <div 
