@@ -11,6 +11,7 @@ import { Unit } from './Models/Unit';
 
 interface UnitCardProps {
     unit: Unit;
+    useHexes: boolean;
     updateHeat: (unitId: number, heat: string[]) => void;
     updateDamage: (unitId: number, damage: number) => void;
     updateHits: (unitId: number, type: string, hits: number) => void;
@@ -24,7 +25,7 @@ const extractNumbers = (input: string, mphits: number): number[] => {
         const result = part.match(/\d+/g);
         let numberValue = result ? parseInt(result.join('')) : 0;
         // Half MP for critical hits
-        for(let i = 0; i < mphits; i++) {
+        for (let i = 0; i < mphits; i++) {
             numberValue = Math.round(numberValue / 2);
         }
         return numberValue;
@@ -51,26 +52,29 @@ const calculateTMM = (unit: Unit) => {
 };
 const calculateAdjustedMV = (unit: Unit): string => {
     const originalParts = unit.BFMove.split('/');
-    const heatAdjustment = unit.MyHeat?.length || 0; 
+    const heatAdjustment = unit.MyHeat?.length || 0;
 
     return originalParts.map(part => {
-        const hasJump = part.endsWith('j');
+        const endingCharMatch = part.match(/[a-zA-Z]$/);
+        const hasEndingChar = endingCharMatch && endingCharMatch.length > 0;
+        const endingChar = hasEndingChar ? endingCharMatch[0] : '';
+
         const numberMatch = part.match(/\d+/g);
         let numberValue = numberMatch ? parseInt(numberMatch[0]) : 0;
 
         // half MV for critical hits
-        for(let i = 0; i < (unit.MyMPHits || 0); i++) {
+        for (let i = 0; i < (unit.MyMPHits || 0); i++) {
             numberValue = Math.round(numberValue / 2);
         }
 
-        // Apply heat adjustments, but not if it's a jump (ends with 'j')
-        if (!hasJump) {
+        // Apply heat adjustments, but only ignore if it ends with 'j'
+        if (endingChar !== 'j') {
             numberValue -= heatAdjustment * 2;
         }
 
         numberValue = Math.max(0, numberValue);
 
-        return hasJump ? `${numberValue}j` : `${numberValue}`; 
+        return hasEndingChar ? `${numberValue}${endingChar}` : `${numberValue}`;
     }).join('/');
 };
 
@@ -78,7 +82,9 @@ const calculateAdjustedMV = (unit: Unit): string => {
 
 
 
-const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits, removeUnit }) => {
+
+
+const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits, removeUnit, useHexes }) => {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
     const toggleDialog = () => {
         setDialogVisible(!isDialogVisible);
@@ -114,36 +120,52 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
 
     const moveSize = unit.BFMove.length > 3 ? '12px' : '18px';
 
+    const adjustedMV = calculateAdjustedMV(unit);
+
+    const halveMovementValue = (mv: string) => {
+        return mv.split('/').map(value => {
+            const numberPart = parseInt(value.match(/\d+/g)![0]);
+            const halvedValue = Math.floor(numberPart / 2);
+
+            const endingCharMatch = value.match(/[a-zA-Z]$/);
+            const endingChar = endingCharMatch ? endingCharMatch[0] : '';
+
+            return endingChar ? `${halvedValue}${endingChar}` : `${halvedValue}`;
+        }).join('/');
+    };
+
+    const displayedMV = useHexes ? halveMovementValue(adjustedMV) : adjustedMV;
+
     return (
-        <div style={{ 
-            padding: 5, 
-            backgroundColor: 'darkgrey', 
-            border: 'solid black', 
-            borderRadius: 10, 
-            margin: 10, 
+        <div style={{
+            padding: 5,
+            backgroundColor: 'darkgrey',
+            border: 'solid black',
+            borderRadius: 10,
+            margin: 10,
             position: 'relative',
             width: '322px',
             height: '493px',
-            overflow: 'hidden'  
+            overflow: 'hidden'
         }}>
             <Icon
-                iconName="Delete" 
-                onClick={handleRemove} 
-                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }} 
+                iconName="Delete"
+                onClick={handleRemove}
+                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }}
             />
-           
 
-<div style={{
-    height: '32px', 
-    display: 'flex',
-    justifyContent: 'left',  
-    alignItems: 'center',  
-    overflow: 'hidden'  
-}}>
-    <span style={{ fontSize: getFontSizeForName(unit.Name), fontWeight: 'bold' }}>
-        {unit.Name}
-    </span>
-</div>
+
+            <div style={{
+                height: '32px',
+                display: 'flex',
+                justifyContent: 'left',
+                alignItems: 'center',
+                overflow: 'hidden'
+            }}>
+                <span style={{ fontSize: getFontSizeForName(unit.Name), fontWeight: 'bold' }}>
+                    {unit.Name}
+                </span>
+            </div>
 
             <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="space-between">
                 <Stack verticalAlign="space-between" style={{ height: '100%' }} tokens={{ childrenGap: 30 }}>
@@ -168,59 +190,60 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                             </div>
                             <div className='game-properties-container'>
                                 <span className='game-properties-title'>MV:</span>
-                                <span className='game-properties-value' style={{ fontSize: moveSize }}>{calculateAdjustedMV(unit)}</span>
+                                {/* <span className='game-properties-value' style={{ fontSize: moveSize }}>{calculateAdjustedMV(unit)}</span> */}
+                                <span className='game-properties-value' style={{ fontSize: moveSize }}>{displayedMV}</span>
                             </div>
                         </Stack>
 
                     </Stack>
                     <AttackDamageTable unit={unit} />
                 </Stack>
-                <Stack.Item 
-    styles={{ 
-        root: { 
-            width: '35%', 
-            height: 'auto', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            border: 'solid black', 
-            backgroundColor: 'white',
-            position: 'relative' 
-        } 
-    }}
->
-    <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
-    <div 
-        style={{ 
-            position: 'absolute', 
-            top: '0%', 
-            right: '0%', 
-            fontSize: 'large', 
-            fontWeight: 'bold', 
-            color: 'darkred', 
-            padding: '5px 5px'
-        }}
-    >
-        {unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue}
-        
-    </div>
-    <div 
-        style={{ 
-            position: 'absolute', 
-            top: '0%', 
-            left: '0%', 
-            fontSize: 'large', 
-            fontWeight: 'bold', 
-            color: 'black', 
-            background: 'white',
-            borderRight: 'solid black',
-            borderBottom: 'solid black',
-            padding: '5px 10px'
-        }}
-    >
-        {unit.MySkill}
-    </div>
-</Stack.Item>
+                <Stack.Item
+                    styles={{
+                        root: {
+                            width: '35%',
+                            height: 'auto',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            border: 'solid black',
+                            backgroundColor: 'white',
+                            position: 'relative'
+                        }
+                    }}
+                >
+                    <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '0%',
+                            right: '0%',
+                            fontSize: 'large',
+                            fontWeight: 'bold',
+                            color: 'darkred',
+                            padding: '5px 5px'
+                        }}
+                    >
+                        {unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue}
+
+                    </div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '0%',
+                            left: '0%',
+                            fontSize: 'large',
+                            fontWeight: 'bold',
+                            color: 'black',
+                            background: 'white',
+                            borderRight: 'solid black',
+                            borderBottom: 'solid black',
+                            padding: '5px 10px'
+                        }}
+                    >
+                        {unit.MySkill}
+                    </div>
+                </Stack.Item>
 
             </Stack>
             <HeatPanel unit={unit} updateHeat={updateHeat} />

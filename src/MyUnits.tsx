@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DefaultButton, Panel, Dialog, DialogFooter, PrimaryButton } from '@fluentui/react';
+import { DefaultButton, Panel, Dialog, DialogFooter, PrimaryButton, Toggle } from '@fluentui/react';
 import NameList from './NameList';
 import MyUnitCard from './MyUnitCard';
 import './Styles-MyUnits.css';
@@ -10,7 +10,10 @@ const MyUnits: React.FC = () => {
     const [, setLastId] = useState(0);
     const [isNameListPanelOpen, setIsNameListPanelOpen] = useState(false);
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
-
+    const [useHexes, setUseHexes] = useState<boolean>(() => {
+        const storedHexSetting = localStorage.getItem('useHexes');
+        return storedHexSetting ? JSON.parse(storedHexSetting) : false;
+    });
 
     // On component mount, retrieve the units from local storage
     useEffect(() => {
@@ -21,14 +24,25 @@ const MyUnits: React.FC = () => {
                 addUnit(unit);
             })
         }
-    }, []);
 
-    // Save the units to local storage whenever they change
+        const storedHexSetting = localStorage.getItem('useHexes');
+        if (storedHexSetting) {
+            const parsedHexes: boolean = JSON.parse(storedHexSetting);
+            setUseHexes(parsedHexes);
+        }
+    }, []); 
+
     useEffect(() => {
         localStorage.setItem('units', JSON.stringify(units));
-    }, [units]);
+        localStorage.setItem('useHexes', JSON.stringify(useHexes));
+    }, [units, useHexes]);
 
     const totalPoints = units.reduce((sum, unit) => sum + (unit.MyCalculatedPointValue || unit.BFPointValue), 0);
+
+    const toggleUseHexes = (_: any, checked?: boolean) => {
+        setUseHexes(!!checked);
+    };
+
 
     const addUnit = (unit: Unit) => {
         setLastId(prevLastId => {
@@ -93,6 +107,7 @@ const MyUnits: React.FC = () => {
                     {totalPoints}
                 </span>
             </h1>
+
             <div className="cardsGrid">
                 {units.map((unit) => (
                     <div className='cardContainer' key={unit.MyId}>
@@ -102,17 +117,18 @@ const MyUnits: React.FC = () => {
                             updateDamage={updateDamage}
                             updateHits={updateHits}
                             removeUnit={removeUnit}
+                            useHexes={useHexes}
                         />
                     </div>
                 ))}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40, marginBottom: 40 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 40, marginBottom: 10, marginRight: 10, marginLeft: 10 }}>
                 <DefaultButton
                     onClick={openPanel}
                     style={{
                         width: units.length > 0 ? 140 : 340,
-                        marginRight: units.length > 0 ? 10 : 0 // Only add margin if Reset button will be shown
+                        marginRight: units.length > 0 ? 10 : 0
                     }}
                 >
                     Add a unit
@@ -123,14 +139,27 @@ const MyUnits: React.FC = () => {
                     style={{
                         backgroundColor: 'darkred',
                         color: 'white',
-                        marginLeft: 10, // space between the buttons
+                        marginLeft: 10,
                         width: 140,
-                        display: units.length === 0 ? 'none' : 'inline-block' // Using display to hide/show ensures correct spacing
+                        display: units.length === 0 ? 'none' : 'inline-block'
                     }}
                 >
                     Reset
                 </DefaultButton>
+
+                
             </div>
+            <div style={{ marginLeft: 'auto', marginRight: 'auto', width: 100 }}>
+                    <Toggle
+                        checked={useHexes}
+                        onChange={toggleUseHexes}
+                        onText="Hexes"
+                        offText="Inches"
+                        styles={{ root: { margin: '20px 0', width: '100%' } }}
+                    />
+                </div>
+
+
 
             <Panel isOpen={isNameListPanelOpen} onDismiss={() => setIsNameListPanelOpen(false)} headerText="Add Unit">
                 <NameList onAddUnit={addUnit} />
