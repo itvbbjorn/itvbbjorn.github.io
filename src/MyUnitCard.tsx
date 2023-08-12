@@ -1,5 +1,5 @@
-import { Stack, Icon } from '@fluentui/react';
-import React from 'react';
+import { Stack, Icon, Panel, TextField, Label } from '@fluentui/react';
+import React, { useState } from 'react';
 import HeatPanel from './HeatPanel';
 import DamagePanel from './DamagePanel';
 import CriticalHitsPanel from './CriticalHitsPanel';
@@ -16,6 +16,7 @@ interface UnitCardProps {
     updateDamage: (unitId: number, damage: number) => void;
     updateHits: (unitId: number, type: string, hits: number) => void;
     removeUnit: (unitId: number) => void;
+    onUnitUpdate: (updatedUnit: Unit) => void;
 }
 
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
@@ -84,10 +85,21 @@ const calculateAdjustedMV = (unit: Unit): string => {
 
 
 
-const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, updateHits, removeUnit, useHexes }) => {
+const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, updateDamage, updateHits, removeUnit, useHexes }) => {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
+    const [isEditPanelOpen, setIsEditPanelOpen] = useState(false);
+    const [editedName, setEditedName] = useState(unit.Name || "");
+    const [editedBorderColor, setEditedBorderColor] = useState(unit.MyBorderColor || "#000000");
     const toggleDialog = () => {
         setDialogVisible(!isDialogVisible);
+    };
+
+    const colorOptions = ["black", "darkred", "darkblue", "darkorange", "darkgreen", "gold", "#F0E68C", "#FF6347", "#8A2BE2", "#20B2AA"];
+
+    const saveEdits = () => {
+        const updatedUnit = { ...unit, Name: editedName, MyBorderColor: editedBorderColor };
+        onUnitUpdate(updatedUnit);
+        setIsEditPanelOpen(false);
     };
 
     const handleRemove = () => {
@@ -140,7 +152,8 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
         <div style={{
             padding: 5,
             backgroundColor: 'darkgrey',
-            border: 'solid black',
+            border: 'solid',
+            borderColor: unit.MyBorderColor,
             borderRadius: 10,
             margin: 10,
             position: 'relative',
@@ -148,6 +161,13 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
             height: '493px',
             overflow: 'hidden'
         }}>
+            <Icon
+                iconName='Edit'
+                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 30 }}
+                onClick={() => setIsEditPanelOpen(true)}
+            >
+
+            </Icon>
             <Icon
                 iconName="Delete"
                 onClick={handleRemove}
@@ -281,7 +301,36 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, updateHeat, updateDamage, u
                     <DefaultButton onClick={toggleDialog} text="Cancel" />
                 </Stack>
             </Dialog>
+            <Panel isOpen={isEditPanelOpen} onDismiss={() => setIsEditPanelOpen(false)} headerText="Edit Unit">
+                <TextField
+                    label="Unit Name"
+                    value={editedName}
+                    onChange={(e, newValue) => setEditedName(newValue || "")}
+                />
+                <Label>Border color</Label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', maxWidth: '150px' }}>
+                    {colorOptions.map(color => (
+                        <div
+                            key={color}
+                            style={{
+                                width: '20px',
+                                height: '20px',
+                                backgroundColor: color,
+                                margin: '5px',
+                                cursor: 'pointer',
+                                border: editedBorderColor === color ? '2px solid black' : '2px solid transparent',
+                                boxSizing: 'border-box'
+                            }}
+                            onClick={() => setEditedBorderColor(color)}
+                        />
+                    ))}
+                </div>
 
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                    <PrimaryButton onClick={saveEdits} style={{ marginRight: '10px' }} text="Save" />
+                    <DefaultButton onClick={() => setIsEditPanelOpen(false)} text="Cancel" />
+                </div>
+            </Panel>
         </div>
 
     )

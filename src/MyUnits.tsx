@@ -43,6 +43,15 @@ const MyUnits: React.FC = () => {
         setUseHexes(!!checked);
     };
 
+    const sortedUnits = [...units].sort((a, b) => {
+        const colorA = a.MyBorderColor || 'black'; 
+        const colorB = b.MyBorderColor || 'black'; 
+    
+        if (colorA < colorB) return -1;
+        if (colorA > colorB) return 1;
+        return 0;
+    });
+    
 
     const addUnit = (unit: Unit) => {
         setLastId(prevLastId => {
@@ -56,7 +65,9 @@ const MyUnits: React.FC = () => {
             return newId;
         });
     };
-
+    const updateUnit = (updatedUnit: Unit) => {
+        setUnits(prevUnits => prevUnits.map(unit => unit.MyId === updatedUnit.MyId ? updatedUnit : unit));
+    };
 
     const removeUnit = (unitId: number) => {
         setUnits(prevUnits => prevUnits.filter(unit => unit.MyId !== unitId));
@@ -109,10 +120,11 @@ const MyUnits: React.FC = () => {
             </h1>
 
             <div className="cardsGrid">
-                {units.map((unit) => (
+                {sortedUnits.map((unit) => (
                     <div className='cardContainer' key={unit.MyId}>
                         <MyUnitCard
                             unit={unit}
+                            onUnitUpdate={updateUnit}
                             updateHeat={updateHeat}
                             updateDamage={updateDamage}
                             updateHits={updateHits}

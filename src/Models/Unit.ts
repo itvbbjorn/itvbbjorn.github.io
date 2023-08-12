@@ -67,4 +67,5 @@ export type Unit = {
     MyWeaponHits?: number;
     MySkill?: number;
     MyCalculatedPointValue?: number;
+    MyBorderColor?: string;
 };
