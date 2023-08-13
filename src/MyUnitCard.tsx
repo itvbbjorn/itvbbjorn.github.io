@@ -23,8 +23,6 @@ interface UnitCardProps {
     pointValue?: number;
 }
 
-
-
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
 const extractNumbers = (input: string, mphits: number): number[] => {
     const parts = input.split('/');
@@ -103,7 +101,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
     };
 
     const colorOptions = ["black", "darkred", "darkblue", "darkorange", "darkgreen", "gold", "#F0E68C", "#FF6347", "#8A2BE2", "#20B2AA"];
-    const displayedSkill = isPreview && skillValue ? skillValue : unit.MySkill;
+    const displayedSkill = isPreview && (skillValue !== undefined) ? skillValue : unit.MySkill;
     const displayedCost = isPreview && pointValue ? pointValue : unit.MySkill;
 
     const saveEdits = () => {
