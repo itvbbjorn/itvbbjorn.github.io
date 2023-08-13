@@ -7,7 +7,7 @@ import AttackDamageTable from './AttackDamageTable';
 import { Dialog } from '@fluentui/react';
 import { PrimaryButton, DefaultButton } from '@fluentui/react';
 import { Unit } from './Models/Unit';
-import AbilityModal from './AbilityModal';
+import SpecialModal from './SpecialModal';
 
 
 interface UnitCardProps {
@@ -365,7 +365,7 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                     <DefaultButton onClick={() => setIsEditPanelOpen(false)} text="Cancel" />
                 </div>
             </Panel>
-            <AbilityModal
+            <SpecialModal
                 ability={selectedAbility}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

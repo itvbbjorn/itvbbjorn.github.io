@@ -4,7 +4,7 @@ import { RulesReference } from './Models/RulesReference';
 import RulesReferences from './RulesReferences'; // Adjust path if needed
 
 
-interface AbilityModalProps {
+interface SpecialModalProps {
     ability: string | null;
     isOpen: boolean;
     onClose: () => void;
@@ -19,7 +19,7 @@ const findRuleByAbbreviation = (abbreviation: string): RulesReference | undefine
 };
 
 
-const AbilityModal: React.FC<AbilityModalProps> = ({ ability, isOpen, onClose }) => {
+const SpecialModal: React.FC<SpecialModalProps> = ({ ability, isOpen, onClose }) => {
     const rule = findRuleByAbbreviation(ability || "");
 
     return (
@@ -32,7 +32,8 @@ const AbilityModal: React.FC<AbilityModalProps> = ({ ability, isOpen, onClose })
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontWeight: 'bold' }}>{rule ? rule.name : "Ability not found"}</span>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {rule && <span style={{ marginRight: 10,  }}>p. {rule.pageNumber}</span>}
+                        {/* {rule && <span style={{ marginRight: 10,  }}>p. {rule.pageNumber}</span>} */}
+                        
                         <IconButton
                             className="ms-modal-closeButton"
                             iconProps={{ iconName: 'Cancel' }}
@@ -40,12 +41,14 @@ const AbilityModal: React.FC<AbilityModalProps> = ({ ability, isOpen, onClose })
                             onClick={onClose}
                         />
                     </div>
+                    
                 </div>
-                <div className="ms-modal-body" style={{  }}>
+                {rule && <div>{rule.type} (p.{rule.pageNumber})</div>}
+                <div className="ms-modal-body" style={{ marginTop: 8 }}>
                     {rule ? (
-                        <div>
+                        <span>
                             {rule.rule}
-                        </div>
+                        </span>
                     ) : (
                         <div>Ability details not available. Optional rules are not yet implemented.</div>
                     )}
@@ -59,4 +62,4 @@ const AbilityModal: React.FC<AbilityModalProps> = ({ ability, isOpen, onClose })
 
 
 
-export default AbilityModal;
+export default SpecialModal;

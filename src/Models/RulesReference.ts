@@ -3,4 +3,5 @@ export type RulesReference = {
     abbreviation: string,
     rule: string,
     pageNumber: number,
+    type: string
 };
