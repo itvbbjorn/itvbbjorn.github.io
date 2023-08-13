@@ -165,7 +165,8 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
             margin: 10,
             position: 'relative',
             width: '322px',
-            height: '493px',
+            // height: '493px',
+            height: isPreview ? '390px' : '493px',
             overflow: 'hidden'
         }}>
             {!isPreview &&
