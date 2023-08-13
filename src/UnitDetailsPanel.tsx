@@ -76,11 +76,14 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
             decreaseAdjustment = 10 + Math.floor((baseValue - 105) / 10) + 1;
         }
 
+        let finalValue;
         if (skillDifference < 0) {
-            return baseValue + (increaseAdjustment * Math.abs(skillDifference));
+            finalValue = baseValue + (increaseAdjustment * Math.abs(skillDifference));
         } else {
-            return baseValue - (decreaseAdjustment * skillDifference);
+            finalValue = baseValue - (decreaseAdjustment * skillDifference);
         }
+
+        return finalValue < 1 ? 1 : finalValue;
     };
 
     const handleAddUnit = () => {
@@ -109,20 +112,20 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
 
     return (
         <Dialog
-            hidden={!isOpen}   
+            hidden={!isOpen}
             onDismiss={onClose}
             dialogContentProps={{
                 title: 'Card preview',
             }}
             modalProps={{
-                isBlocking: true, 
+                isBlocking: true,
                 containerClassName: 'dialogContainer'
             }}
         >
-            <div style={{ pointerEvents: 'none'}}>
+            <div style={{ pointerEvents: 'none' }}>
                 <MyUnitCard
-                    skillValue= {skillValue}
-                    pointValue= {calculatePointValue(unit.BFPointValue, skillValue - defaultSkill)}
+                    skillValue={skillValue}
+                    pointValue={calculatePointValue(unit.BFPointValue, skillValue - defaultSkill)}
                     isPreview={true}
                     unit={unit}
                     updateDamage={() => { }}
