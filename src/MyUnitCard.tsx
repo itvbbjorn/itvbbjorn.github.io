@@ -7,6 +7,7 @@ import AttackDamageTable from './AttackDamageTable';
 import { Dialog } from '@fluentui/react';
 import { PrimaryButton, DefaultButton } from '@fluentui/react';
 import { Unit } from './Models/Unit';
+import AbilityModal from './AbilityModal';
 
 
 interface UnitCardProps {
@@ -93,6 +94,8 @@ const calculateAdjustedMV = (unit: Unit): string => {
 const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, updateDamage, updateHits, removeUnit, useHexes, isPreview, skillValue, pointValue }) => {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
     const [isEditPanelOpen, setIsEditPanelOpen] = useState(false);
+    const [selectedAbility, setSelectedAbility] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [editedName, setEditedName] = useState(unit.Name || "");
     const [editedBorderColor, setEditedBorderColor] = useState(unit.MyBorderColor || "#000000");
     const toggleDialog = () => {
@@ -260,22 +263,22 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                         {isPreview ? displayedCost : (unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue)}
                     </div>
                     {/* {!isPreview && */}
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '0%',
-                                left: '0%',
-                                fontSize: 'large',
-                                fontWeight: 'bold',
-                                color: 'black',
-                                background: 'white',
-                                borderRight: 'solid black',
-                                borderBottom: 'solid black',
-                                padding: '5px 10px'
-                            }}
-                        >
-                            {displayedSkill}
-                        </div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '0%',
+                            left: '0%',
+                            fontSize: 'large',
+                            fontWeight: 'bold',
+                            color: 'black',
+                            background: 'white',
+                            borderRight: 'solid black',
+                            borderBottom: 'solid black',
+                            padding: '5px 10px'
+                        }}
+                    >
+                        {displayedSkill}
+                    </div>
                     {/* } */}
 
                 </Stack.Item>
@@ -288,8 +291,21 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                         SPECIAL:
                     </span>
                     <div style={{ fontWeight: 'bold', color: "darkred", marginLeft: "5px" }}>
-                        {unit.BFAbilities}
+                        {unit.BFAbilities.split(',').map((ability, index) => (
+                            <span
+                                key={index}
+                                style={{ cursor: 'pointer'}}
+                                onClick={() => {
+                                    setSelectedAbility(ability.trim());
+                                    setIsModalOpen(true);
+                                }}
+                            >
+                                {ability.trim()}
+                                {index !== unit.BFAbilities.split(',').length - 1 && ', '}
+                            </span>
+                        ))}
                     </div>
+
                     <CriticalHitsPanel unit={unit} updateHits={updateHits} />
 
                 </Stack.Item>
@@ -345,6 +361,11 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                     <DefaultButton onClick={() => setIsEditPanelOpen(false)} text="Cancel" />
                 </div>
             </Panel>
+            <AbilityModal
+                ability={selectedAbility}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </div>
 
     )
