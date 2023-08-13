@@ -208,7 +208,7 @@ const RulesReferences: RulesReference[] = [
     {
         name: 'Omni',
         abbreviation: 'OMNI',
-        rule: 'May transport a single battle armor (p.38)',
+        rule: 'May transport a single battle armor unit (p.38)',
         pageNumber: 78
     },
     {
