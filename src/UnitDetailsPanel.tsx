@@ -121,6 +121,8 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
         >
             <div style={{ pointerEvents: 'none'}}>
                 <MyUnitCard
+                    skillValue= {skillValue}
+                    pointValue= {calculatePointValue(unit.BFPointValue, skillValue - defaultSkill)}
                     isPreview={true}
                     unit={unit}
                     updateDamage={() => { }}

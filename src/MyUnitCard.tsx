@@ -18,7 +18,11 @@ interface UnitCardProps {
     removeUnit: (unitId: number) => void;
     onUnitUpdate: (updatedUnit: Unit) => void;
     isPreview: boolean;
+    skillValue?: number;
+    pointValue?: number;
 }
+
+
 
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
 const extractNumbers = (input: string, mphits: number): number[] => {
@@ -86,7 +90,7 @@ const calculateAdjustedMV = (unit: Unit): string => {
 
 
 
-const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, updateDamage, updateHits, removeUnit, useHexes, isPreview }) => {
+const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, updateDamage, updateHits, removeUnit, useHexes, isPreview, skillValue, pointValue }) => {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
     const [isEditPanelOpen, setIsEditPanelOpen] = useState(false);
     const [editedName, setEditedName] = useState(unit.Name || "");
@@ -96,6 +100,8 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
     };
 
     const colorOptions = ["black", "darkred", "darkblue", "darkorange", "darkgreen", "gold", "#F0E68C", "#FF6347", "#8A2BE2", "#20B2AA"];
+    const displayedSkill = isPreview && skillValue ? skillValue : unit.MySkill;
+    const displayedCost = isPreview && pointValue ? pointValue : unit.MySkill;
 
     const saveEdits = () => {
         const updatedUnit = { ...unit, Name: editedName, MyBorderColor: editedBorderColor };
@@ -238,23 +244,21 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                     }}
                 >
                     <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
-                    {!isPreview &&
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '0%',
-                                right: '0%',
-                                fontSize: 'large',
-                                fontWeight: 'bold',
-                                color: 'darkred',
-                                padding: '5px 5px'
-                            }}
-                        >
-                            {unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue}
-
-                        </div>
-                    }
-                    {!isPreview &&
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '0%',
+                            right: '0%',
+                            fontSize: 'large',
+                            fontWeight: 'bold',
+                            color: 'darkred',
+                            padding: '5px 5px'
+                        }}
+                    >
+                        {/* {isPreview ? displayedCost : unit.MyCalculatedPointValue} */}
+                        {isPreview ? displayedCost : (unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue)}
+                    </div>
+                    {/* {!isPreview && */}
                         <div
                             style={{
                                 position: 'absolute',
@@ -269,9 +273,9 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                                 padding: '5px 10px'
                             }}
                         >
-                            {unit.MySkill}
+                            {displayedSkill}
                         </div>
-                    }
+                    {/* } */}
 
                 </Stack.Item>
             </Stack>
