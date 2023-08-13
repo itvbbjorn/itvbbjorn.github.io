@@ -103,7 +103,7 @@ const RulesReferences: RulesReference[] = [
         name: 'CASE II',
         type: 'Standard',
         abbreviation: 'CASEII',
-        rule: 'Units with this ability have superior protection againstammunition explosions and can ignore Ammo Hit critical hits (see Ammo Hit, p. 50).', 
+        rule: 'Units with this ability have superior protection against ammunition explosions and can ignore Ammo Hit critical hits (see Ammo Hit, p. 50).', 
         pageNumber: 77
     },
     {

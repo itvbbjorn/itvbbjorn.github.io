@@ -12,12 +12,11 @@ interface SpecialModalProps {
 
 const findRuleByAbbreviation = (abbreviation: string): RulesReference | undefined => {
     return RulesReferences.find(rule => {
-        const regexPattern = rule.abbreviation.replace(/#/g, "\\d+"); // Replace # with \d+ (regex for any digit, one or more times)
-        const regex = new RegExp(`^${regexPattern}$`, 'i'); // Create regex pattern
+        const regexPattern = rule.abbreviation.replace(/#/g, ".+"); // Any number of any characters to replace # in string
+        const regex = new RegExp(`^${regexPattern}$`, 'i');
         return regex.test(abbreviation);
     });
 };
-
 
 const SpecialModal: React.FC<SpecialModalProps> = ({ ability, isOpen, onClose }) => {
     const rule = findRuleByAbbreviation(ability || "");
