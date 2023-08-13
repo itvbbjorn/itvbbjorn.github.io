@@ -17,6 +17,7 @@ interface UnitCardProps {
     updateHits: (unitId: number, type: string, hits: number) => void;
     removeUnit: (unitId: number) => void;
     onUnitUpdate: (updatedUnit: Unit) => void;
+    isPreview: boolean;
 }
 
 // returns numbers only from BFMove strings. '"12\"j"' returns 12
@@ -85,7 +86,7 @@ const calculateAdjustedMV = (unit: Unit): string => {
 
 
 
-const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, updateDamage, updateHits, removeUnit, useHexes }) => {
+const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, updateDamage, updateHits, removeUnit, useHexes, isPreview }) => {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
     const [isEditPanelOpen, setIsEditPanelOpen] = useState(false);
     const [editedName, setEditedName] = useState(unit.Name || "");
@@ -161,18 +162,22 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
             height: '493px',
             overflow: 'hidden'
         }}>
-            <Icon
-                iconName='Edit'
-                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 30 }}
-                onClick={() => setIsEditPanelOpen(true)}
-            >
+            {!isPreview &&
+                <Icon
+                    iconName='Edit'
+                    style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 30 }}
+                    onClick={() => setIsEditPanelOpen(true)}
+                ></Icon>
+            }
 
-            </Icon>
-            <Icon
-                iconName="Delete"
-                onClick={handleRemove}
-                style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }}
-            />
+            {!isPreview &&
+                <Icon
+                    iconName="Delete"
+                    onClick={handleRemove}
+                    style={{ cursor: 'pointer', position: 'absolute', top: 11, right: 7 }}
+                />
+            }
+
 
 
             <div style={{
@@ -233,38 +238,42 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                     }}
                 >
                     <img src={unit.ImageUrl} alt={`${unit.Name}`} className='unit-image' />
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: '0%',
-                            right: '0%',
-                            fontSize: 'large',
-                            fontWeight: 'bold',
-                            color: 'darkred',
-                            padding: '5px 5px'
-                        }}
-                    >
-                        {unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue}
+                    {!isPreview &&
+                        <div
+                            style={{
+                                position: 'absolute',
+                                top: '0%',
+                                right: '0%',
+                                fontSize: 'large',
+                                fontWeight: 'bold',
+                                color: 'darkred',
+                                padding: '5px 5px'
+                            }}
+                        >
+                            {unit.MyCalculatedPointValue !== undefined ? unit.MyCalculatedPointValue : unit.BFPointValue}
 
-                    </div>
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: '0%',
-                            left: '0%',
-                            fontSize: 'large',
-                            fontWeight: 'bold',
-                            color: 'black',
-                            background: 'white',
-                            borderRight: 'solid black',
-                            borderBottom: 'solid black',
-                            padding: '5px 10px'
-                        }}
-                    >
-                        {unit.MySkill}
-                    </div>
+                        </div>
+                    }
+                    {!isPreview &&
+                        <div
+                            style={{
+                                position: 'absolute',
+                                top: '0%',
+                                left: '0%',
+                                fontSize: 'large',
+                                fontWeight: 'bold',
+                                color: 'black',
+                                background: 'white',
+                                borderRight: 'solid black',
+                                borderBottom: 'solid black',
+                                padding: '5px 10px'
+                            }}
+                        >
+                            {unit.MySkill}
+                        </div>
+                    }
+
                 </Stack.Item>
-
             </Stack>
             <HeatPanel unit={unit} updateHeat={updateHeat} />
             <DamagePanel unit={unit} updateDamage={(damage) => updateDamage(unit.MyId!, damage)} />

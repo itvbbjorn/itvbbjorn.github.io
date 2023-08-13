@@ -11,6 +11,10 @@
     /* Making it a block-level element */
 }
 
+.dialogContainer {
+    width: 100%; /* or any specific width you desire */
+    max-width: 400px; /* adjust as necessary */
+}
 
 .game-properties-stack {
     margin-top: 10px;

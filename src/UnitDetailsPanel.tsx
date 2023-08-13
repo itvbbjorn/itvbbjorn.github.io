@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { DefaultButton, Panel, Dialog, TextField, Stack, FontSizes } from '@fluentui/react';
+import { DefaultButton, Dialog, Stack } from '@fluentui/react';
 import './Styles-UnitDetailsPanel.css';
-import UnitCard from './UnitCard';
 import { Unit } from './Models/Unit';
-import { blob } from 'stream/consumers';
+import MyUnitCard from './MyUnitCard';
 
 interface UnitDetailsPanelProps {
     unit: Unit;
@@ -18,7 +17,6 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
         setSkillValue(defaultSkill);
     }, [unit]);
 
-    const [isSkillDialogOpen, setIsSkillDialogOpen] = useState(false);
     const defaultSkill: number = 4;
     const [skillValue, setSkillValue] = useState<number>(defaultSkill);
 
@@ -29,7 +27,7 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
     const calculatePointValue = (baseValue: number, skillDifference: number) => {
         let increaseAdjustment;
         let decreaseAdjustment;
-    
+
         if (baseValue <= 7) {
             increaseAdjustment = 1;
         } else if (baseValue <= 12) {
@@ -53,7 +51,7 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
         } else {
             increaseAdjustment = 10 + Math.floor((baseValue - 53) / 5) + 1;
         }
-    
+
         if (baseValue <= 14) {
             decreaseAdjustment = 1;
         } else if (baseValue <= 24) {
@@ -77,17 +75,13 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
         } else {
             decreaseAdjustment = 10 + Math.floor((baseValue - 105) / 10) + 1;
         }
-    
+
         if (skillDifference < 0) {
             return baseValue + (increaseAdjustment * Math.abs(skillDifference));
         } else {
             return baseValue - (decreaseAdjustment * skillDifference);
         }
     };
-    
-
-
-
 
     const handleAddUnit = () => {
         const calculatedValue = calculatePointValue(unit.BFPointValue, skillValue - defaultSkill);
@@ -100,7 +94,6 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
         }
         onClose();
     };
-
 
     const incrementSkill = () => {
         if (skillValue < 9) {
@@ -115,13 +108,29 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
     };
 
     return (
-        <Panel
-            isOpen={isOpen}
+        <Dialog
+            hidden={!isOpen}   
             onDismiss={onClose}
-            headerText='Unit preview'
-            closeButtonAriaLabel="Close"
+            dialogContentProps={{
+                title: 'Card preview',
+            }}
+            modalProps={{
+                isBlocking: true, 
+                containerClassName: 'dialogContainer'
+            }}
         >
-            <UnitCard unit={unit}></UnitCard>
+            <div style={{ pointerEvents: 'none'}}>
+                <MyUnitCard
+                    isPreview={true}
+                    unit={unit}
+                    updateDamage={() => { }}
+                    updateHeat={() => { }}
+                    updateHits={() => { }}
+                    useHexes={false}
+                    removeUnit={() => { }}
+                    onUnitUpdate={() => { }}
+                />
+            </div>
             <div style={{
                 textAlign: 'center',
                 margin: '10px 0'
@@ -165,12 +174,7 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
                     <span style={{ fontWeight: 'bold', marginRight: '10px' }}>Point Value:</span>
                     <span style={{ color: 'darkred', fontSize: 30, fontWeight: 'bold', marginTop: '10px' }}>{calculatePointValue(unit.BFPointValue, skillValue - defaultSkill)}</span>
                 </div>
-
             </Stack>
-
-
-
-
 
             {onAddUnit && (
                 <DefaultButton
@@ -183,8 +187,7 @@ const UnitDetailsPanel: React.FC<UnitDetailsPanelProps> = ({ unit, isOpen, onClo
                     }}
                 />
             )}
-        </Panel>
-
+        </Dialog>
     );
 };
 

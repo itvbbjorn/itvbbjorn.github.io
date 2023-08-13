@@ -123,6 +123,7 @@ const MyUnits: React.FC = () => {
                 {sortedUnits.map((unit) => (
                     <div className='cardContainer' key={unit.MyId}>
                         <MyUnitCard
+                            isPreview={true}
                             unit={unit}
                             onUnitUpdate={updateUnit}
                             updateHeat={updateHeat}
