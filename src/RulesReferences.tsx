@@ -187,14 +187,14 @@ const RulesReferences: RulesReference[] = [
         name: 'Jump Jets, Weak',
         type: 'Standard',
         abbreviation: 'JMPW#',
-        rule: 'This unit has particularly underpowered, weak jump jets or overpowered, strong jump jets compared to their non-jump movement. Weak Jump Jets subtract the # from their TMM when using Jumping movement. Strong Jump Jets add the # to their TMM when using Jumping movement.',
+        rule: 'Note: The app does not consider this rule when calculating move or TMM. This unit has particularly underpowered, weak jump jets or overpowered, strong jump jets compared to their non-jump movement. Weak Jump Jets subtract the # from their TMM when using Jumping movement. Strong Jump Jets add the # to their TMM when using Jumping movement.',
         pageNumber: 78
     },
     {
         name: 'Jump Jets, Strong',
         type: 'Standard',
         abbreviation: 'JMPS#',
-        rule: 'This unit has particularly underpowered, weak jump jets or overpowered, strong jump jets compared to their non-jump movement. Weak Jump Jets subtract the # from their TMM when using Jumping movement. Strong Jump Jets add the # to their TMM when using Jumping movement.',
+        rule: 'Note: The app does not consider this rule when calculating move or TMM.This unit has particularly underpowered, weak jump jets or overpowered, strong jump jets compared to their non-jump movement. Weak Jump Jets subtract the # from their TMM when using Jumping movement. Strong Jump Jets add the # to their TMM when using Jumping movement.',
         pageNumber: 78
     },
     {
