@@ -288,17 +288,17 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                     <span style={{ fontWeight: 'bold' }}>
                         SPECIAL:
                     </span>
-                    
-                    <div style={{ 
-                        fontWeight: 'bold', 
-                        color: "darkred", 
-                        marginLeft: "5px", 
+
+                    <div style={{
+                        fontWeight: 'bold',
+                        color: "darkred",
+                        marginLeft: "5px",
                         pointerEvents: 'all' // force on to override in unit preview mode
                     }}>
-                        {unit.BFAbilities.split(',').map((ability, index) => (
+                        {unit.BFAbilities ? unit.BFAbilities.split(',').map((ability, index) => (
                             <span
                                 key={index}
-                                style={{ cursor: 'pointer'}}
+                                style={{ cursor: 'pointer' }}
                                 onClick={() => {
                                     setSelectedAbility(ability.trim());
                                     setIsModalOpen(true);
@@ -307,8 +307,9 @@ const MyUnitCard: React.FC<UnitCardProps> = ({ unit, onUnitUpdate, updateHeat, u
                                 {ability.trim()}
                                 {index !== unit.BFAbilities.split(',').length - 1 && ', '}
                             </span>
-                        ))}
+                        )) : null}
                     </div>
+
 
                     <CriticalHitsPanel unit={unit} updateHits={updateHits} />
 
