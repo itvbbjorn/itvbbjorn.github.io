@@ -30,28 +30,53 @@ const MyUnits: React.FC = () => {
             const parsedHexes: boolean = JSON.parse(storedHexSetting);
             setUseHexes(parsedHexes);
         }
-    }, []); 
+    }, []);
+
+    const totalPoints = units.reduce((sum, unit) => sum + (unit.MyCalculatedPointValue || unit.BFPointValue), 0);
+
+    const [op, setOp] = useState<number>(() => {
+        const storedOp = localStorage.getItem('op');
+        return storedOp ? JSON.parse(storedOp) : 0;
+    });
+
+    const [sp, setSp] = useState<number>(() => {
+        const storedSp = localStorage.getItem('sp');
+        return storedSp ? JSON.parse(storedSp) : 0;
+    });
+    const incrementOp = () => setOp(prev => prev + 1);
+    const decrementOp = () => setOp(prev => Math.max(prev - 1, 0));
+    const incrementSp = () => setSp(prev => prev + 1);
+    const decrementSp = () => setSp(prev => Math.max(prev - 1, 0));
+
+    const [showVictoryPoints, setShowVictoryPoints] = useState<boolean>(() => {
+        const storedSetting = localStorage.getItem('showVictoryPoints');
+        return storedSetting ? JSON.parse(storedSetting) : false;
+    });
 
     useEffect(() => {
         localStorage.setItem('units', JSON.stringify(units));
         localStorage.setItem('useHexes', JSON.stringify(useHexes));
-    }, [units, useHexes]);
+        localStorage.setItem('op', JSON.stringify(op));
+        localStorage.setItem('sp', JSON.stringify(sp));
+        localStorage.setItem('showVictoryPoints', JSON.stringify(showVictoryPoints));
+    }, [units, useHexes, op, sp, showVictoryPoints]);
 
-    const totalPoints = units.reduce((sum, unit) => sum + (unit.MyCalculatedPointValue || unit.BFPointValue), 0);
+
+
 
     const toggleUseHexes = (_: any, checked?: boolean) => {
         setUseHexes(!!checked);
     };
 
     const sortedUnits = [...units].sort((a, b) => {
-        const colorA = a.MyBorderColor || 'black'; 
-        const colorB = b.MyBorderColor || 'black'; 
-    
+        const colorA = a.MyBorderColor || 'black';
+        const colorB = b.MyBorderColor || 'black';
+
         if (colorA < colorB) return -1;
         if (colorA > colorB) return 1;
         return 0;
     });
-    
+
 
     const addUnit = (unit: Unit) => {
         setLastId(prevLastId => {
@@ -118,6 +143,78 @@ const MyUnits: React.FC = () => {
                     {totalPoints}
                 </span>
             </h1>
+            {showVictoryPoints && (
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px', marginTop: '10px' }}>
+
+                    <div style={{ width: 'auto', textAlign: 'center', marginRight: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <span style={{ fontWeight: 'bold' }}>Objective Points</span>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop: '10px'
+                        }}>
+                            <DefaultButton
+                                onClick={decrementOp}
+                                text="-"
+                                style={{
+                                    width: '35px',
+                                    height: '35px',
+                                    minWidth: '0',
+                                    padding: '0',
+                                }}
+                            />
+                            <span style={{ margin: '0 10px', fontSize: 30, fontWeight: 'bold' }}>{op}</span>
+                            <DefaultButton
+                                onClick={incrementOp}
+                                text="+"
+                                style={{
+                                    width: '35px',
+                                    height: '35px',
+                                    minWidth: '0',
+                                    padding: '0',
+                                }}
+                            />
+                        </div>
+                    </div>
+
+
+                    <div style={{ width: 'auto', textAlign: 'center', marginRight: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <span style={{ fontWeight: 'bold' }}>Secondary Points</span>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop: '10px'
+                        }}>
+                            <DefaultButton
+                                onClick={decrementSp}
+                                text="-"
+                                style={{
+                                    width: '35px',
+                                    height: '35px',
+                                    minWidth: '0',
+                                    padding: '0',
+                                }}
+                            />
+                            <span style={{ margin: '0 10px', fontSize: 30, fontWeight: 'bold' }}>{sp}</span>
+                            <DefaultButton
+                                onClick={incrementSp}
+                                text="+"
+                                style={{
+                                    width: '35px',
+                                    height: '35px',
+                                    minWidth: '0',
+                                    padding: '0',
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+            
 
             <div className="cardsGrid">
                 {sortedUnits.map((unit) => (
@@ -160,17 +257,25 @@ const MyUnits: React.FC = () => {
                     Reset
                 </DefaultButton>
 
-                
+
             </div>
-            <div style={{ marginLeft: 'auto', marginRight: 'auto', width: 100 }}>
-                    <Toggle
-                        checked={useHexes}
-                        onChange={toggleUseHexes}
-                        onText="Hexes"
-                        offText="Inches"
-                        styles={{ root: { margin: '20px 0', width: '100%' } }}
-                    />
-                </div>
+            <div style={{ marginLeft: 'auto', marginRight: 'auto', width: 200 }}>
+                <Toggle
+                    checked={useHexes}
+                    onChange={toggleUseHexes}
+                    onText="Hexes"
+                    offText="Inches"
+                    styles={{ root: { margin: '20px 0', width: '50%', float: 'left' } }}
+                />
+                <Toggle
+                    checked={showVictoryPoints}
+                    onChange={(_, checked) => setShowVictoryPoints(!!checked)}
+                    onText="VP on"
+                    offText="VP off"
+                    styles={{ root: { margin: '20px 0', width: '50%', float: 'right' } }}
+                />
+
+            </div>
 
 
 
